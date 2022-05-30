@@ -1,0 +1,11 @@
+body,
+#root,
+.App {
+  min-height: 100vh;
+}
+
+.main-layout {
+  background-image: url("../public/banner.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
