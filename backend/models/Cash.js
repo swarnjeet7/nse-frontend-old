@@ -42,7 +42,7 @@ const CashSchema = mongoose.Schema({
     required: true,
   },
   Timestamp: {
-    type: String,
+    type: Date,
     required: true,
   },
   TotalTrades: {
@@ -53,6 +53,10 @@ const CashSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  Profit: {
+    type: Number,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("Cash", CashSchema);
+module.exports = mongoose.model("Cash", CashSchema, "Cash");

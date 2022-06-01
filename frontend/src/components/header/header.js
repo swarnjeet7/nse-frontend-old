@@ -93,8 +93,8 @@ function Header() {
       {show && (
         <ReportsBhavcopyModal
           show={show}
-          isCashBhavcopy={isCashBhavcopy}
           onHide={() => setShow(false)}
+          isCashBhavcopy={isCashBhavcopy}
         />
       )}
     </>

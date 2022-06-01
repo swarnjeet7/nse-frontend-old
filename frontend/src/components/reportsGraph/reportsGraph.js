@@ -4,8 +4,8 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import config from "../../config";
 import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import moment from "moment";
-
 import "./graph.css";
 
 function GainersLoosers(props) {
@@ -13,6 +13,26 @@ function GainersLoosers(props) {
   const [date, setDate] = useState(moment().format("DD/MM/yyyy"));
   const url = `${config.BASE_URL}/cash-reports/top?date`;
   const [symbol, setSymbol] = useState("Apple");
+
+  const options = {
+    title: {
+      text: `${symbol} graph from 1st Oct to 15 Oct`,
+    },
+    yAxis: {
+      title: {
+        text: "Price range",
+      },
+    },
+    series: [
+      {
+        name: symbol,
+        data: [
+          100, 150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200, 100, 150,
+          120, 129, 170, 200, 115, 100, 102, 100, 100, 200,
+        ],
+      },
+    ],
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,57 +47,57 @@ function GainersLoosers(props) {
   };
 
   useEffect(() => {
-    Highcharts.chart("container", {
-      title: {
-        text: `${symbol} graph from 1st Oct to 15 Oct`,
-      },
-      subtitle: {
-        text: "Source: nsestocks.com",
-      },
-      yAxis: {
-        title: {
-          text: "Price range",
-        },
-      },
-      legend: {
-        layout: "vertical",
-        align: "right",
-        verticalAlign: "middle",
-      },
-      plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false,
-          },
-          pointStart: 1,
-        },
-      },
-      series: [
-        {
-          name: symbol,
-          data: [
-            100, 150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200, 100,
-            150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200,
-          ],
-        },
-      ],
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 500,
-            },
-            chartOptions: {
-              legend: {
-                layout: "horizontal",
-                align: "center",
-                verticalAlign: "bottom",
-              },
-            },
-          },
-        ],
-      },
-    });
+    // Highcharts.chart("container", {
+    //   title: {
+    //     text: `${symbol} graph from 1st Oct to 15 Oct`,
+    //   },
+    //   subtitle: {
+    //     text: "Source: nsestocks.com",
+    //   },
+    // yAxis: {
+    //   title: {
+    //     text: "Price range",
+    //   },
+    // },
+    //   legend: {
+    //     layout: "vertical",
+    //     align: "right",
+    //     verticalAlign: "middle",
+    //   },
+    //   plotOptions: {
+    //     series: {
+    //       label: {
+    //         connectorAllowed: false,
+    //       },
+    //       pointStart: 1,
+    //     },
+    //   },
+    //   series: [
+    //     {
+    //       name: symbol,
+    //       data: [
+    //         100, 150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200, 100,
+    //         150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200,
+    //       ],
+    //     },
+    //   ],
+    //   responsive: {
+    //     rules: [
+    //       {
+    //         condition: {
+    //           maxWidth: 500,
+    //         },
+    //         chartOptions: {
+    //           legend: {
+    //             layout: "horizontal",
+    //             align: "center",
+    //             verticalAlign: "bottom",
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   },
+    // });
   });
 
   return (
@@ -131,14 +151,16 @@ function GainersLoosers(props) {
       </Form>
 
       <main>
-        <figure className="highcharts-figure">
+        {/* <figure className="highcharts-figure">
           <div id="container"></div>
           <p className="highcharts-description">
             This is basic line chart showing trends in a dataset. This chart
             includes the <code>series-label</code> module, which adds a label to
             each line for enhanced readability.
           </p>
-        </figure>
+        </figure> */}
+
+        <HighchartsReact highcharts={Highcharts} options={options} />
       </main>
     </>
   );

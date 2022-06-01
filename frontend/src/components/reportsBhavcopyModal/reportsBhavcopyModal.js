@@ -2,25 +2,28 @@ import { Modal, Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import moment from "moment";
 import { useState } from "react";
-import { useDispatch, connect } from "react-redux";
+import { connect } from "react-redux";
 import { setData } from "../reportsBhavcopy/reportsBhavcopySlice";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap-daterangepicker/daterangepicker.css";
 import config from "../../config";
 
+window.moment = moment;
+
 function ReportsBhavcopyModal(props) {
-  const { isCashBhavcopy } = props;
+  const { isCashBhavcopy, show, onHide } = props;
   const [portfolio, setPortfolio] = useState("");
-  const [date, setDate] = useState(moment().format("DD/MM/yyyy"));
+  const [date, setDate] = useState(moment());
   const activeKey = isCashBhavcopy ? "date" : "date_range";
   const [key, setKey] = useState(activeKey);
-  const url = `${config.BASE_URL}/cash-reports/bhavcopy`;
-  const dispatch = useDispatch();
+  const url = `${config.BASE_URL}/${
+    isCashBhavcopy ? "cash-reports" : "fo-reports"
+  }/bhavcopy`;
   const navigate = useNavigate();
 
   const handleDateChange = (newDate) => {
-    setDate(newDate.format("DD/MM/yyyy"));
+    setDate(newDate.format("MM/DD/yyyy"));
   };
 
   const handlePortfolioChange = (value) => {
@@ -33,11 +36,8 @@ function ReportsBhavcopyModal(props) {
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        dispatch(setData(res.data));
+        props.setData(res.data);
         props.onHide();
-        const url = isCashBhavcopy
-          ? "/cash-reports/bhavcopy"
-          : "/fo-reports/bhavcopy";
         navigate(url, { replace: true });
       })
       .catch((error) => {
@@ -47,7 +47,8 @@ function ReportsBhavcopyModal(props) {
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -73,9 +74,6 @@ function ReportsBhavcopyModal(props) {
                     initialSettings={{
                       singleDatePicker: true,
                       startDate: date,
-                      locale: {
-                        format: "DD/MM/yyyy",
-                      },
                     }}
                     onCallback={handleDateChange}
                   >
@@ -147,8 +145,8 @@ function ReportsBhavcopyModal(props) {
   );
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//   setData: (data) => dispatch(setData(data)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  setData: (data) => dispatch(setData(data)),
+});
 
-export default connect(null, null)(ReportsBhavcopyModal);
+export default connect(null, mapDispatchToProps)(ReportsBhavcopyModal);

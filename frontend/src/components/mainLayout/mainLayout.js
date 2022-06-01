@@ -9,7 +9,6 @@ function MainLayout(props) {
   const [urlParams, setUrlParams] = useState(
     _.remove(pathname.split("/"), _.identity)
   );
-  console.log({ pathname });
 
   useEffect(() => {
     if (pathname !== window.location.pathname) {
