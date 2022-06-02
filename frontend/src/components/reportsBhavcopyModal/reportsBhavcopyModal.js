@@ -2,14 +2,12 @@ import { Modal, Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import moment from "moment";
 import { useState } from "react";
-import { connect } from "react-redux";
 import { setData } from "../reportsBhavcopy/reportsBhavcopySlice";
+import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import "bootstrap-daterangepicker/daterangepicker.css";
 import config from "../../config";
-
-window.moment = moment;
 
 function ReportsBhavcopyModal(props) {
   const { isCashBhavcopy, show, onHide } = props;
@@ -60,7 +58,7 @@ function ReportsBhavcopyModal(props) {
       </Modal.Header>
       <Modal.Body>
         <Tabs
-          id="controlled-tab-example"
+          id="controlledtab-example"
           activeKey={key}
           onSelect={(k) => setKey(k)}
           className="mb-3"

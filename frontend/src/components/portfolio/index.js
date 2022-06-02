@@ -1,9 +1,9 @@
 import CreatePortfolio from "./create";
-import EditPortfolio from "./edit";
+import ManagePortfolio from "./manage";
 
 const Portfolio = {
   CreatePortfolio,
-  EditPortfolio,
+  ManagePortfolio,
 };
 
 export default Portfolio;

@@ -1,9 +1,3 @@
-import CreateUser from "./create";
-import EditUser from "./edit";
+import ManageUser from "./manage";
 
-const User = {
-  CreateUser,
-  EditUser,
-};
-
-export default User;
+export default ManageUser;

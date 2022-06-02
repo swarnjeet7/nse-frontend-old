@@ -1,10 +1,6 @@
 import { Navbar, Container, Nav, Button, NavDropdown } from "react-bootstrap";
-import ReportsBhavcopyModal from "../reportsBhavcopyModal";
-import { useState } from "react";
 
 function Header() {
-  const [show, setShow] = useState(false);
-  const [isCashBhavcopy, setIsCashBhavcopy] = useState(false);
   const handleLogout = () => {};
 
   return (
@@ -33,12 +29,7 @@ function Header() {
               </NavDropdown>
 
               <NavDropdown title="Cash Reports" id="reports-cash-dropdown">
-                <NavDropdown.Item
-                  onClick={() => {
-                    setShow(true);
-                    setIsCashBhavcopy(true);
-                  }}
-                >
+                <NavDropdown.Item href="/cash-reports/bhavcopy">
                   Bhavcopy
                 </NavDropdown.Item>
                 <NavDropdown.Item href="/cash-reports/gainers-loosers">
@@ -50,19 +41,8 @@ function Header() {
               </NavDropdown>
 
               <NavDropdown title="FO Reports" id="reports-fo-dropdown">
-                <NavDropdown.Item
-                  onClick={() => {
-                    setShow(true);
-                    setIsCashBhavcopy(false);
-                  }}
-                >
+                <NavDropdown.Item href="/fo-reports/bhavcopy">
                   Bhavcopy
-                </NavDropdown.Item>
-              </NavDropdown>
-
-              <NavDropdown title="Pivots" id="pivots-dropdown">
-                <NavDropdown.Item href="/pivots/show">
-                  Show Pivots
                 </NavDropdown.Item>
               </NavDropdown>
 
@@ -70,17 +50,14 @@ function Header() {
                 <NavDropdown.Item href="/portfolio/create">
                   Create Portfolio
                 </NavDropdown.Item>
-                <NavDropdown.Item href="/portfolio/edit">
-                  Edit Portfolio
+                <NavDropdown.Item href="/portfolio/manage">
+                  Manage Portfolio
                 </NavDropdown.Item>
               </NavDropdown>
 
               <NavDropdown title="Users" id="users-dropdown">
-                <NavDropdown.Item href="/user/create">
-                  Create Users
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/user/edit">
-                  Edit Users
+                <NavDropdown.Item href="/user/manage">
+                  Manage Users
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>
@@ -90,13 +67,6 @@ function Header() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {show && (
-        <ReportsBhavcopyModal
-          show={show}
-          onHide={() => setShow(false)}
-          isCashBhavcopy={isCashBhavcopy}
-        />
-      )}
     </>
   );
 }

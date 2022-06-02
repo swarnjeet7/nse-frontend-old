@@ -10,13 +10,13 @@ import "./graph.css";
 
 function GainersLoosers(props) {
   const [data, setData] = useState([]);
-  const [date, setDate] = useState(moment().format("DD/MM/yyyy"));
+  const [date, setDate] = useState("05/27/2022");
   const url = `${config.BASE_URL}/cash-reports/top?date`;
-  const [symbol, setSymbol] = useState("Apple");
+  const [symbol, setSymbol] = useState("CoalIndia");
 
   const options = {
     title: {
-      text: `${symbol} graph from 1st Oct to 15 Oct`,
+      text: `${symbol} line graph from 22nd May to 27th May`,
     },
     yAxis: {
       title: {
@@ -46,60 +46,6 @@ function GainersLoosers(props) {
       });
   };
 
-  useEffect(() => {
-    // Highcharts.chart("container", {
-    //   title: {
-    //     text: `${symbol} graph from 1st Oct to 15 Oct`,
-    //   },
-    //   subtitle: {
-    //     text: "Source: nsestocks.com",
-    //   },
-    // yAxis: {
-    //   title: {
-    //     text: "Price range",
-    //   },
-    // },
-    //   legend: {
-    //     layout: "vertical",
-    //     align: "right",
-    //     verticalAlign: "middle",
-    //   },
-    //   plotOptions: {
-    //     series: {
-    //       label: {
-    //         connectorAllowed: false,
-    //       },
-    //       pointStart: 1,
-    //     },
-    //   },
-    //   series: [
-    //     {
-    //       name: symbol,
-    //       data: [
-    //         100, 150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200, 100,
-    //         150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200,
-    //       ],
-    //     },
-    //   ],
-    //   responsive: {
-    //     rules: [
-    //       {
-    //         condition: {
-    //           maxWidth: 500,
-    //         },
-    //         chartOptions: {
-    //           legend: {
-    //             layout: "horizontal",
-    //             align: "center",
-    //             verticalAlign: "bottom",
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // });
-  });
-
   return (
     <>
       <Form noValidate onSubmit={handleSubmit}>
@@ -112,8 +58,8 @@ function GainersLoosers(props) {
                 value={symbol}
                 onChange={(event) => setSymbol(event.target.value)}
               >
-                <option value="gainers">Apple</option>
-                <option value="loosers">Amazon</option>
+                <option value="CoalIndia">CoalIndia</option>
+                <option value="20Microne">20Microne</option>
               </Form.Select>
             </Form.Group>
           </Col>
@@ -122,11 +68,8 @@ function GainersLoosers(props) {
               <Form.Label>Date</Form.Label>
               <DateRangePicker
                 initialSettings={{
-                  startDate: date,
-                  endDate: moment(date, "DD/MM/yyyy").add(-10, "days"),
-                  locale: {
-                    format: "DD/MM/yyyy",
-                  },
+                  startDate: moment(date).add(-5, "days"),
+                  endDate: date,
                 }}
                 onCallback={(start, end) => {
                   console.log(moment(start).format("DD/MM/yyyy"));

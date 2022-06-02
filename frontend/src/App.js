@@ -3,12 +3,13 @@ import Dashboard from "./components/dashboard";
 import Login from "./components/login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import ImportFile from "./components/importFile/importFile";
-import ReportsBhavcopy from "./components/reportsBhavcopy";
+import CashReportsBhavcopy from "./components/cashReportsBhavcopy";
+import FoReportsBhavcopy from "./components/foReportsBhavcopy";
 import GainersLoosers from "./components/gainersLoosers";
 import ReportsGraph from "./components/reportsGraph";
 import ShowPivots from "./components/pivots";
 import Portfolio from "./components/portfolio";
-import User from "./components/user";
+import ManageUser from "./components/user";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -30,14 +31,14 @@ function App() {
           <Route path="/cash-reports">
             <Route
               path="bhavcopy"
-              element={<ReportsBhavcopy title="Cash Reports" isCashBhavcopy />}
+              element={<CashReportsBhavcopy isCashBhavcopy />}
             />
             <Route path="gainers-loosers" element={<GainersLoosers />} />
             <Route path="graph" element={<ReportsGraph />} />
           </Route>
 
           <Route path="/fo-reports">
-            <Route path="bhavcopy" element={<ReportsBhavcopy title="FO" />} />
+            <Route path="bhavcopy" element={<FoReportsBhavcopy />} />
           </Route>
 
           <Route path="/pivots">
@@ -46,12 +47,11 @@ function App() {
 
           <Route path="/portfolio">
             <Route path="create" element={<Portfolio.CreatePortfolio />} />
-            <Route path="edit" element={<Portfolio.EditPortfolio />} />
+            <Route path="manage" element={<Portfolio.ManagePortfolio />} />
           </Route>
 
           <Route path="/user">
-            <Route path="create" element={<User.CreateUser />} />
-            <Route path="edit" element={<User.EditUser />} />
+            <Route path="manage" element={<ManageUser />} />
           </Route>
         </Route>
         <Route path="*" element={() => "404 not found"} />

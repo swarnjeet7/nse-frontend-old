@@ -1,25 +1,38 @@
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 
-function CreatePortfolio() {
+function ManageUser() {
   const handleSubmit = () => {};
 
   return (
     <Container fluid>
       <Row>
         <Col className="border-right">
-          <div className="border-bottom mb-3">Create Portfolio</div>
+          <div className="border-bottom mb-3">Create User</div>
           <Form noValidate onSubmit={handleSubmit}>
-            <Form.Group controlId="date" className="mb-3">
-              <Form.Label>Portfolio Name</Form.Label>
-              <Form.Control type="text" placeholder="Portfolio Name" />
+            <Form.Group className="mb-3">
+              <Form.Label>User Name</Form.Label>
+              <Form.Control type="text" placeholder="User Name" />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>User Type</Form.Label>
+              <Form.Select aria-label="Default select example">
+                <option>Select user type</option>
+                <option value="1">Admin</option>
+                <option value="2">Manager</option>
+                <option value="3">Executive</option>
+              </Form.Select>
             </Form.Group>
             <Form.Group controlId="select" className="mb-3">
               <Form.Label>Full Name</Form.Label>
               <Form.Control type="text" placeholder="Full Name" />
             </Form.Group>
+            <Form.Group controlId="select" className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="text" placeholder="Password" />
+            </Form.Group>
             <Form.Group controlId="select" className="mb-5">
-              <Form.Label>Full Address</Form.Label>
-              <Form.Control type="text" placeholder="Full Address" />
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control type="text" placeholder="Confirm Password" />
             </Form.Group>
             <Row className="mb-5">
               <Col className="d-flex justify-content-end">
@@ -28,7 +41,7 @@ function CreatePortfolio() {
                   type="submit"
                   className="w-100"
                 >
-                  Creat Portfolio
+                  Creat User
                 </Button>
               </Col>
             </Row>
@@ -101,30 +114,47 @@ function CreatePortfolio() {
           </ul>
         </Col>
         <Col>
-          <div className="border-bottom mb-3">Edit Portfolio</div>
+          <div className="border-bottom mb-3">Edit User Profile</div>
           <Form noValidate onSubmit={handleSubmit}>
-            <Form.Group controlId="date" className="mb-3">
-              <Form.Label>Portfolio Name</Form.Label>
+            <Form.Group className="mb-3">
+              <Form.Label>User Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Portfolio Name"
+                placeholder="User Name"
                 value="Swarnjeet"
               />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>User Type</Form.Label>
+              <Form.Select aria-label="Default select example" value={1}>
+                <option>Select user type</option>
+                <option value="1">Admin</option>
+                <option value="2">Manager</option>
+                <option value="3">Executive</option>
+              </Form.Select>
             </Form.Group>
             <Form.Group controlId="select" className="mb-3">
               <Form.Label>Full Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Full Name"
-                value="Swarnjeet Singh"
+                value="Swarnjeet singh"
+              />
+            </Form.Group>
+            <Form.Group controlId="select" className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value="hellokitty"
               />
             </Form.Group>
             <Form.Group controlId="select" className="mb-5">
-              <Form.Label>Full Address</Form.Label>
+              <Form.Label>Confirm Password</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Full Address"
-                value="HN - 365, Sarai Khawaja, Faridabad, Haryana - 121003"
+                type="password"
+                placeholder="Confirm Password"
+                value="hellokitty"
               />
             </Form.Group>
             <Row className="mb-5">
@@ -134,7 +164,7 @@ function CreatePortfolio() {
                   type="submit"
                   className="w-100"
                 >
-                  Update Portfolio
+                  Update User
                 </Button>
               </Col>
             </Row>
@@ -145,4 +175,4 @@ function CreatePortfolio() {
   );
 }
 
-export default CreatePortfolio;
+export default ManageUser;
