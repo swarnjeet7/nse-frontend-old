@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 const cashReportsBhavcopy = require("./routes/cashReportsBhapcopy");
 const foReportsBhavcopy = require("./routes/foReportsBhavcopy");
 const portfolio = require("./routes/portfolio");
+const user = require("./routes/user");
 
 app.get("/", function (req, res) {
   res.send("App working");
@@ -27,6 +28,7 @@ app.get("/", function (req, res) {
 app.use("/cash-reports", cashReportsBhavcopy);
 app.use("/fo-reports", foReportsBhavcopy);
 app.use("/portfolio", portfolio);
+app.use("/user", user);
 
 mongoose.connect(
   process.env.DB_CONNECTION_URL,
