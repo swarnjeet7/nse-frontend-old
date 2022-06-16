@@ -7,7 +7,7 @@ function Header() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    removeCookie("authorization", null, { path: "/", expires: 0 });
+    removeCookie("authorization");
     navigate("/login", { replace: true });
   };
 
