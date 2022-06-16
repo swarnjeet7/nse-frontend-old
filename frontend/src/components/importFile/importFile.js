@@ -26,11 +26,7 @@ function ImportFile(props) {
     const formData = new FormData();
     formData.append("file", file);
     setError(true);
-
-    const url = `http://localhost:8080/${
-      title === "FO" ? "fo-reports" : "cash-reports"
-    }/bhavcopy`;
-
+    const url = `/${title === "FO" ? "fo-reports" : "cash-reports"}/bhavcopy`;
     fetch(url, {
       method: "POST",
       body: formData,

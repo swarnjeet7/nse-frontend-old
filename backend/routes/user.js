@@ -1,26 +1,36 @@
 const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
-const fs = require("fs");
-const { parse } = require("csv-parse");
 const User = require("../models/User");
-const moment = require("moment");
+const jwt = require("jsonwebtoken");
+const helpers = require("../utilities/helper");
 
 router.post("/login", function (req, res) {
   const { UserName, Password } = req.body;
+
   try {
-    User.findOne({ UserName: UserName }, function (err, user) {
+    User.findOne({ UserName: UserName.toLowerCase() }, function (err, user) {
       if (err) throw err;
 
       // test a matching password
       user.comparePassword(Password, function (err, isMatch) {
         if (err) throw err;
+
+        const { UserName, UserType, FullName } = user;
+        const payload = {
+          UserName,
+          UserType,
+          FullName,
+        };
+
+        const token = jwt.sign(payload, process.env.SECRET_CODE);
+
         if (isMatch) {
           res.json({
             login: true,
             status: 200,
             message: "You have logged in successfully",
-            data: user,
+            token,
           });
         }
       });
@@ -30,23 +40,37 @@ router.post("/login", function (req, res) {
   }
 });
 
-router.post("/create", function (req, res) {
+router.post("/create", helpers.verifyToken, function (req, res) {
   const { UserName, UserType, FullName, Password, ConfirmPassword } = req.body;
   try {
     const user = new User({
-      UserName,
+      UserName: UserName.toLowerCase(),
       UserType,
       FullName,
       Password,
       ConfirmPassword,
     });
-    user.save().then((user) => res.json(user));
+
+    user
+      .save()
+      .then((user, err) => {
+        res.json({
+          message: `Username ${UserName} has been created successfully`,
+          status: 200,
+        });
+      })
+      .catch((err) => {
+        res.json({
+          message: `Username ${UserName} has already existed. Please try another username`,
+          status: 200,
+        });
+      });
   } catch (err) {
     res.json({ message: err.message });
   }
 });
 
-router.patch("/create", function (req, res) {
+router.patch("/update", helpers.verifyToken, function (req, res) {
   const { UserName, UserType, FullName, Password, ConfirmPassword } = req.body;
   try {
     User.findOne({ UserName: UserName }, function (err, user) {

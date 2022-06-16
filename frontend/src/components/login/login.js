@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { Form, Button, Container, Row, Col } from "react-bootstrap/";
+import { useCookies } from "react-cookie";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import _ from "lodash";
 
-const LoginForm = (props) => {
-  const [state, setState] = useState({ user: null, error: null });
+const LoginForm = () => {
+  const [cookies, setCookie] = useCookies(["authorization"]);
+  const [form, setForm] = useState({ UserName: "", Password: "" });
+  const [error, setError] = useState(null);
   const [validated, setValidated] = useState(false);
-  let { user, error } = state;
+  const authCookie = _.get(cookies, "authorization");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    const loginForm = event.currentTarget;
+    if (loginForm.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       return false;
@@ -18,17 +22,35 @@ const LoginForm = (props) => {
     setValidated(true);
 
     try {
-      let user = { token: "hsdfkewoidf@sis#RFGS" };
-      setState({ user });
+      fetch("/user/login", {
+        method: "POST",
+        body: JSON.stringify(form),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setCookie("authorization", res.token, { path: "/" });
+        });
     } catch (error) {
-      setState({ error });
+      setError(error);
     }
+  };
+
+  const handleInputChange = (event) => {
+    setForm((prevForm) => {
+      return {
+        ...prevForm,
+        [event.target.placeholder]: event.target.value,
+      };
+    });
   };
 
   return (
     <Container>
       {error && <p>{error.message}</p>}
-      {user && <Navigate to="/dashboard" replace={true} />}
+      {authCookie && <Navigate to="/dashboard" replace={true} />}
 
       <Row className="gx-5">
         <div className="text-center mt-2">
@@ -49,7 +71,13 @@ const LoginForm = (props) => {
               className="mb-3"
             >
               <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Username" required />
+              <Form.Control
+                type="text"
+                placeholder="UserName"
+                required
+                value={form.UserName}
+                onChange={handleInputChange}
+              />
               <Form.Control.Feedback type="invalid">
                 Please provide a valid username.
               </Form.Control.Feedback>
@@ -60,7 +88,13 @@ const LoginForm = (props) => {
               className="mb-3"
             >
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" required />
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                required
+                value={form.Password}
+                onChange={handleInputChange}
+              />
               <Form.Control.Feedback type="invalid">
                 Please provide a valid password.
               </Form.Control.Feedback>

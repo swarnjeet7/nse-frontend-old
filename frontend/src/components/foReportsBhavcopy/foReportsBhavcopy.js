@@ -3,7 +3,6 @@ import { Container, Table } from "react-bootstrap";
 import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import config from "../../config";
 
 function FoReportsBhavcopy(props) {
   const style = {
@@ -15,7 +14,6 @@ function FoReportsBhavcopy(props) {
   const [portfolio, setPortfolio] = useState("");
   const [date, setDate] = useState("05/25/2022");
   const [data, setData] = useState([]);
-  const url = `${config.BASE_URL}/fo-reports/bhavcopy`;
 
   const handleDateChange = (newDate) => {
     setDate(newDate.format("MM/DD/yyyy"));
@@ -28,7 +26,7 @@ function FoReportsBhavcopy(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch(url)
+    fetch("/fo-reports/bhavcopy")
       .then((res) => res.json())
       .then((res) => {
         setData(res);

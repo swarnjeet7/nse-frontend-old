@@ -1,13 +1,12 @@
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
-// const cors = require("cors");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
+const helpers = require("./utilities/helper");
 require("dotenv").config();
 
 // Middleware
-// app.use(cors);
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -25,9 +24,9 @@ app.get("/", function (req, res) {
   res.send("App working");
 });
 
-app.use("/cash-reports", cashReportsBhavcopy);
-app.use("/fo-reports", foReportsBhavcopy);
-app.use("/portfolio", portfolio);
+app.use("/cash-reports", helpers.verifyToken, cashReportsBhavcopy);
+app.use("/fo-reports", helpers.verifyToken, foReportsBhavcopy);
+app.use("/portfolio", helpers.verifyToken, portfolio);
 app.use("/user", user);
 
 mongoose.connect(

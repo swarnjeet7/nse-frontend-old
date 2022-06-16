@@ -1,7 +1,15 @@
 import { Navbar, Container, Nav, Button, NavDropdown } from "react-bootstrap";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const handleLogout = () => {};
+  const [, , removeCookie] = useCookies(["authorization"]);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    removeCookie("authorization", null, { path: "/", expires: 0 });
+    navigate("/login", { replace: true });
+  };
 
   return (
     <>

@@ -21,8 +21,8 @@ function MainLayout(props) {
       <Header />
       <Container
         fluid
-        className="pt-5 pb-5 mt-5"
-        style={{ height: "calc(100vh - 56px)" }}
+        className="pt-3 pt-3"
+        style={{ height: "calc(100vh - 56px)", marginTop: 56 }}
       >
         <Breadcrumb>
           <Breadcrumb.Item href="/dashboard">Home</Breadcrumb.Item>

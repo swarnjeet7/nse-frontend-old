@@ -3,7 +3,6 @@ import { Container, Table } from "react-bootstrap";
 import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import config from "../../config";
 
 function CashReportBhavcopy(props) {
   const style = {
@@ -16,7 +15,6 @@ function CashReportBhavcopy(props) {
   const [date, setDate] = useState("05/25/2022");
   const [key, setKey] = useState("date");
   const [data, setData] = useState([]);
-  const url = `${config.BASE_URL}/cash-reports/bhavcopy`;
 
   const handleDateChange = (newDate) => {
     setDate(newDate.format("MM/DD/yyyy"));
@@ -29,7 +27,7 @@ function CashReportBhavcopy(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch(url)
+    fetch("/cash-reports/bhavcopy")
       .then((res) => res.json())
       .then((res) => {
         setData(res);

@@ -94,15 +94,6 @@ function GainersLoosers(props) {
       </Form>
 
       <main>
-        {/* <figure className="highcharts-figure">
-          <div id="container"></div>
-          <p className="highcharts-description">
-            This is basic line chart showing trends in a dataset. This chart
-            includes the <code>series-label</code> module, which adds a label to
-            each line for enhanced readability.
-          </p>
-        </figure> */}
-
         <HighchartsReact highcharts={Highcharts} options={options} />
       </main>
     </>

@@ -2,7 +2,6 @@ import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import { Form, Row, Col, Button, Table } from "react-bootstrap";
 import { useState } from "react";
-import config from "../../config";
 
 function GainersLoosers(props) {
   const style = {
@@ -15,7 +14,6 @@ function GainersLoosers(props) {
   const [topType, setTopType] = useState("Gainers");
   const [date, setDate] = useState("05/25/2022");
   const [count, setCount] = useState(10);
-  const url = `${config.BASE_URL}/cash-reports/top?type=${topType}&date=${date}&count=${count}`;
 
   const handleDateChange = (newDate) => {
     setDate(newDate.format("MM/DD/yyyy"));
@@ -23,7 +21,7 @@ function GainersLoosers(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch(url)
+    fetch(`/cash-reports/top?type=${topType}&date=${date}&count=${count}`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
