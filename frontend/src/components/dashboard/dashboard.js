@@ -1,5 +1,5 @@
 import { Row, Alert, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import moment from "moment";
 
 export default function Dashboard() {
   return (
@@ -7,17 +7,18 @@ export default function Dashboard() {
       <Row>
         <Col sm={9}>
           <main>
-            <h1>Welcome to the NSE Stock Analysis Dashboard</h1>
+            <h3 className="mt-5">
+              Welcome to the NSE Stock Analysis Dashboard
+            </h3>
           </main>
         </Col>
         <Col>
           <aside>
-            <Link to="/top-gainers-loosers">
-              <Alert variant="success">Top Gainer: TATAMOTERS</Alert>
-            </Link>
-            <Link to="/top-gainers-loosers">
-              <Alert variant="danger">Top Loosers: Airete</Alert>
-            </Link>
+            <Alert variant="warning">
+              Date: {moment().format("DD MMM yyyy")}
+            </Alert>
+            <Alert variant="success">Top Gainer: TATAMOTERS</Alert>
+            <Alert variant="danger">Top Loosers: Airete</Alert>
           </aside>
         </Col>
       </Row>

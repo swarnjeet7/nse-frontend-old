@@ -4,12 +4,6 @@ body,
   min-height: 100vh;
 }
 
-.main-layout {
-  background-image: url("../public/banner.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
 .opacity-zero {
   opacity: 0;
 }
