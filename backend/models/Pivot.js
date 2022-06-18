@@ -12,29 +12,54 @@ const PivotSchema = mongoose.Schema({
   R3: {
     type: Number,
     required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
   },
   R2: {
     type: Number,
     required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
   },
   R1: {
     type: Number,
     required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
   },
-  PP: {
+  P: {
     type: Number,
     required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
   },
   S1: {
     type: Number,
     required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
   },
   S2: {
     type: Number,
     required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
   },
   S3: {
     type: Number,
+    required: true,
+    set: function (v) {
+      return v.toFixed(2);
+    },
+  },
+  date: {
+    type: Date,
     required: true,
   },
 });
