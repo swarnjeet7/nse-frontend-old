@@ -4,25 +4,48 @@ const _ = require("lodash");
 const fs = require("fs");
 const { parse } = require("csv-parse");
 const Cash = require("../models/Cash");
-const Symbol = require("../models/Symbol");
+const PortfolioScript = require("../models/PortfolioScript");
 const moment = require("moment");
+
+function CashQuery(filter) {}
 
 router.get("/bhavcopy", function (req, res) {
   try {
     const {
       from,
       to = moment(new Date(from)).add(1, "days").format("MM/DD/yyyy"),
+      Portfolio,
     } = req.query;
 
-    Cash.find(
-      {
-        $gte: new Date(from),
-        $lt: new Date(to),
-      },
-      function (err, docs) {
-        res.json(docs);
-      }
-    );
+    if (Portfolio) {
+      PortfolioScript.find({ Portfolio }, (err, script) => {
+        if (err) throw err;
+        if (!_.isEmpty(script[0].Scripts)) {
+          Cash.find(
+            {
+              $gte: new Date(from),
+              $lt: new Date(to),
+              Symbol: { $in: [...script[0].Scripts] },
+            },
+            (err, data) => {
+              if (err) throw err;
+              res.json(data);
+            }
+          );
+        }
+      });
+    } else {
+      Cash.find(
+        {
+          $gte: new Date(from),
+          $lt: new Date(to),
+        },
+        (err, data) => {
+          if (err) throw err;
+          res.json(data);
+        }
+      );
+    }
   } catch (err) {
     res.json({ message: err.message });
   }

@@ -47,7 +47,7 @@ router.post("/create", function (req, res) {
   }
 });
 
-router.patch("/edit", function (req, res) {
+router.patch("/update", function (req, res) {
   const { id, Name, PortfolioName, Address } = req.body;
   try {
     Portfolio.findOne({ _id: id }).exec((err, portfolio) => {

@@ -1,16 +1,12 @@
 const mongoose = require("mongoose");
 
 const PortfolioScriptSchema = mongoose.Schema({
-  Name: {
+  Portfolio: {
     type: String,
     required: true,
   },
-  PortfolioName: {
-    type: String,
-    required: true,
-  },
-  Address: {
-    type: String,
+  Scripts: {
+    type: Array,
     required: true,
   },
   CreatedAt: {

@@ -46,7 +46,7 @@ const CashSchema = mongoose.Schema({
     required: true,
   },
   TotalTrades: {
-    type: String,
+    type: Number,
     required: true,
   },
   ISIN: {

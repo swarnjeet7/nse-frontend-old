@@ -7,7 +7,7 @@ import CashReportsBhavcopy from "./components/cashReportsBhavcopy";
 import FoReportsBhavcopy from "./components/foReportsBhavcopy";
 import GainersLoosers from "./components/gainersLoosers";
 import ReportsGraph from "./components/reportsGraph";
-import ShowPivots from "./components/pivots";
+import ShowPivot from "./components/pivot";
 import Portfolio from "./components/portfolio";
 import ManageUser from "./components/user";
 
@@ -41,9 +41,7 @@ function App() {
             <Route path="bhavcopy" element={<FoReportsBhavcopy />} />
           </Route>
 
-          <Route path="/pivots">
-            <Route path="show" element={<ShowPivots />} />
-          </Route>
+          <Route path="/pivot" element={<ShowPivot />}></Route>
 
           <Route path="/portfolio">
             <Route path="create" element={<Portfolio.CreatePortfolio />} />

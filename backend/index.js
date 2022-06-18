@@ -18,7 +18,9 @@ app.use(bodyParser.json());
 const cashReportsBhavcopy = require("./routes/cashReportsBhapcopy");
 const foReportsBhavcopy = require("./routes/foReportsBhavcopy");
 const portfolio = require("./routes/portfolio");
+const portfolioScript = require("./routes/portfolioScript");
 const user = require("./routes/user");
+const pivot = require("./routes/pivot");
 
 app.get("/", function (req, res) {
   res.send("App working");
@@ -27,6 +29,8 @@ app.get("/", function (req, res) {
 app.use("/cash-reports", helpers.verifyToken, cashReportsBhavcopy);
 app.use("/fo-reports", helpers.verifyToken, foReportsBhavcopy);
 app.use("/portfolio", helpers.verifyToken, portfolio);
+app.use("/pivot", helpers.verifyToken, pivot);
+app.use("/portfolioScript", helpers.verifyToken, portfolioScript);
 app.use("/user", user);
 
 mongoose.connect(

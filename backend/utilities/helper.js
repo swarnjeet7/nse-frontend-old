@@ -3,14 +3,18 @@ const _ = require("lodash");
 
 module.exports = {
   verifyToken: (req, res, next) => {
-    const cookies = {};
-    const cookiesString = req.headers["cookie"];
-    const cookiesArray = cookiesString.split(";");
-    cookiesArray.forEach((cookie) => {
-      const [key, value] = cookie.split("=");
-      cookies[key] = value;
-    });
-    const token = cookies["authorization"];
+    let token = req.headers.authorization;
+    if (req.headers.cookie) {
+      const cookies = {};
+      const cookiesString = req.headers.cookie;
+      const cookiesArray = cookiesString.split(";");
+      cookiesArray.forEach((cookie) => {
+        const [key, value] = cookie.split("=");
+        cookies[key] = value;
+      });
+      token = cookies.authorization;
+    }
+
     const errorMessage = {
       status: 403,
       message:

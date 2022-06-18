@@ -1,11 +1,12 @@
 const mongoose = require("mongoose");
 
 const PortfolioSchema = mongoose.Schema({
-  Name: {
+  Portfolio: {
     type: String,
     required: true,
+    unique: true,
   },
-  PortfolioName: {
+  FullName: {
     type: String,
     required: true,
   },

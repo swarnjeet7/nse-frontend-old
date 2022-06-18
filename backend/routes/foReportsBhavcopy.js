@@ -11,17 +11,23 @@ router.get("/bhavcopy", function (req, res) {
     const {
       from,
       to = moment(new Date(from)).add(1, "days").format("MM/DD/yyyy"),
+      Symbol = null,
     } = req.query;
 
-    FO.find(
-      {
-        $gte: new Date(from),
-        $lt: new Date(to),
-      },
-      function (err, docs) {
-        res.json(docs);
-      }
-    );
+    const filter = {
+      $gte: new Date(from),
+      $lt: new Date(to),
+    };
+
+    if (Symbol) {
+      filter.Symbol = Symbol;
+    }
+
+    FO.find(filter, function (err, docs) {
+      if (err) throw err;
+
+      res.json(docs);
+    });
   } catch (err) {
     res.json({ message: err.message });
   }
