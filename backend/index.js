@@ -21,6 +21,7 @@ const portfolio = require("./routes/portfolio");
 const portfolioScript = require("./routes/portfolioScript");
 const user = require("./routes/user");
 const pivot = require("./routes/pivot");
+const simbol = require("./routes/symbol");
 
 app.get("/", function (req, res) {
   res.send("App working");
@@ -32,6 +33,7 @@ app.use("/portfolio", helpers.verifyToken, portfolio);
 app.use("/pivot", helpers.verifyToken, pivot);
 app.use("/portfolioScript", helpers.verifyToken, portfolioScript);
 app.use("/user", user);
+app.use("/symbol", simbol);
 
 mongoose.connect(
   process.env.DB_CONNECTION_URL,

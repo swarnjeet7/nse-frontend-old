@@ -7,7 +7,11 @@ router.get("/", function (req, res) {
   try {
     PortfolioModal.find({}, function (err, data) {
       if (err) throw err;
-      res.json(data);
+      res.json({
+        status: 200,
+        message: "success",
+        data,
+      });
     });
   } catch (err) {
     res.status(400).send({ message: err.message });

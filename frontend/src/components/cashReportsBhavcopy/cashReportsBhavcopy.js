@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Table } from "react-bootstrap";
 import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
@@ -12,18 +12,35 @@ function CashReportBhavcopy(props) {
     zIndex: 3,
     background: "white",
   };
-  const [Portfolio, setPortfolio] = useState("");
-  const [date, setDate] = useState("05/25/2022");
+  const [form, setForm] = useState({ date: "05/25/2022", Portfolio: "" });
+  const [Portfolios, setPortfolios] = useState([]);
   const [key, setKey] = useState("date");
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
 
+  useEffect(() => {
+    fetch("/portfolio")
+      .then((res) => res.json())
+      .then((res) => {
+        setPortfolios(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  }, []);
+
   const handleDateChange = (newDate) => {
-    setDate(newDate.format("MM/DD/yyyy"));
+    setForm((prevForm) => ({
+      ...prevForm,
+      date: newDate.format("MM/DD/yyyy"),
+    }));
   };
 
   const handlePortfolioChange = (event) => {
-    setPortfolio(event.target.value);
+    setForm((prevForm) => ({
+      ...prevForm,
+      Portfolio: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
@@ -62,7 +79,7 @@ function CashReportBhavcopy(props) {
                     <DateRangePicker
                       initialSettings={{
                         singleDatePicker: true,
-                        startDate: date,
+                        startDate: form.date,
                       }}
                       onCallback={handleDateChange}
                     >
@@ -76,12 +93,14 @@ function CashReportBhavcopy(props) {
                     <Form.Select
                       aria-label="Default select example"
                       onChange={handlePortfolioChange}
-                      value={Portfolio}
+                      value={form.Portfolio}
                     >
                       <option>Select portfolio</option>
-                      <option value="1">Swarnjeet</option>
-                      <option value="2">Manjeet</option>
-                      <option value="3">Favroute</option>
+                      {Portfolios.map((item) => (
+                        <option value="1" key={item._id}>
+                          {item.Portfolio}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -119,6 +138,7 @@ function CashReportBhavcopy(props) {
                     <Form.Label>Plesae select symbol</Form.Label>
                     <Form.Select aria-label="Default select example">
                       <option>Select symbol</option>
+
                       <option value="1">Swarnjeet</option>
                       <option value="2">Manjeet</option>
                       <option value="3">Favroute</option>
