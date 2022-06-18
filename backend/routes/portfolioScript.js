@@ -67,19 +67,12 @@ router.delete("/", function (req, res) {
   const { Name } = req.body;
 
   try {
-    PortfolioScript.findOne({ Name }).exec((err, script) => {
+    PortfolioScript.findOneAndDelete({ Name }).exec((err, data) => {
       if (err) throw err;
-      if (!script) {
-        return res.status(400).send({
-          message: `The portfolio script not found`,
-        });
-      }
-
-      script.delete().then(() => {
-        res.json({
-          status: 200,
-          message: "The portfolio script has been deleted successfully",
-        });
+      res.json({
+        status: 200,
+        message: "The portfolio script has been deleted successfully",
+        data,
       });
     });
   } catch (err) {

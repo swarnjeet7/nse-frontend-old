@@ -27,6 +27,7 @@ function ImportFile(props) {
     formData.append("file", file);
     setError(true);
     const url = `/${title === "FO" ? "fo-reports" : "cash-reports"}/bhavcopy`;
+
     fetch(url, {
       method: "POST",
       body: formData,
@@ -64,7 +65,7 @@ function ImportFile(props) {
             <Form noValidate validated={error} onSubmit={handleSubmit}>
               <Form.Group controlId="formFile" className="mb-5">
                 <Form.Label className="mb-3">
-                  Plesae import the today's Bhavcopy file as in csv format
+                  Plesae import csv file.
                 </Form.Label>
                 <Form.Control
                   type="file"

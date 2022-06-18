@@ -1,14 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const _ = require("lodash");
-const fs = require("fs");
-const { parse } = require("csv-parse");
-const Portfolio = require("../models/Portfolio");
+const PortfolioModal = require("../models/Portfolio");
 const moment = require("moment");
 
-router.get("/all", function (req, res) {
+router.get("/", function (req, res) {
   try {
-    Portfolio.find({}, function (err, data) {
+    PortfolioModal.find({}, function (err, data) {
+      if (err) throw err;
       res.json(data);
     });
   } catch (err) {
@@ -16,28 +14,43 @@ router.get("/all", function (req, res) {
   }
 });
 
-router.post("/create", function (req, res) {
-  const { Name, PortfolioName, Address } = req.body;
+router.delete("/", function (req, res) {
+  const { Portfolio } = req.body;
   try {
-    Portfolio.findOne({ Name }, (err, user) => {
+    PortfolioModal.findOneAndDelete({ Portfolio }, function (err, portfolio) {
+      if (err) throw err;
+
+      res.json({
+        status: 200,
+        message: "Portfolio has been deleted successfully",
+        portfolio,
+      });
+    });
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
+});
+
+router.post("/", function (req, res) {
+  const { FullName, Portfolio, Address } = req.body;
+  try {
+    PortfolioModal.findOne({ Portfolio }, (err, user) => {
       if (user) {
         return res.status(400).send({
-          message: `The user with ${
-            (Name, PortfolioName)
-          } has already been existed. Please choose another name`,
+          message: `The ${Portfolio} has already been existed. Please choose another name.`,
         });
       }
 
-      const portfolio = new Portfolio({
-        Name,
-        PortfolioName,
+      const portfolio = new PortfolioModal({
+        FullName,
+        Portfolio,
         Address,
       });
 
       portfolio.save().then((data) => {
         res.status(200).send({
           status: 200,
-          message: "The user has been added successfully",
+          message: "The Portfolio has been created successfully",
           data,
         });
       });
@@ -47,10 +60,11 @@ router.post("/create", function (req, res) {
   }
 });
 
-router.patch("/update", function (req, res) {
+router.patch("/", function (req, res) {
   const { id, Name, PortfolioName, Address } = req.body;
   try {
-    Portfolio.findOne({ _id: id }).exec((err, portfolio) => {
+    PortfolioModal.findOne({ _id: id }).exec((err, portfolio) => {
+      if (err) throw err;
       if (!portfolio) {
         return res.status(400).send({
           message: `The user not found`,

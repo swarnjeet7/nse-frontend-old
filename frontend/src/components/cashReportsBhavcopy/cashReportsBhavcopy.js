@@ -3,6 +3,7 @@ import { Container, Table } from "react-bootstrap";
 import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
+import Loader from "../loader";
 
 function CashReportBhavcopy(props) {
   const style = {
@@ -11,29 +12,32 @@ function CashReportBhavcopy(props) {
     zIndex: 3,
     background: "white",
   };
-  const [portfolio, setPortfolio] = useState("");
+  const [Portfolio, setPortfolio] = useState("");
   const [date, setDate] = useState("05/25/2022");
   const [key, setKey] = useState("date");
   const [data, setData] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   const handleDateChange = (newDate) => {
     setDate(newDate.format("MM/DD/yyyy"));
   };
 
-  const handlePortfolioChange = (value) => {
-    setPortfolio(value);
+  const handlePortfolioChange = (event) => {
+    setPortfolio(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setLoader(true);
     fetch("/cash-reports/bhavcopy")
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+        setLoader(false);
       })
       .catch((error) => {
         console.error(error);
+        setLoader(false);
       });
   };
 
@@ -43,7 +47,10 @@ function CashReportBhavcopy(props) {
         <Tabs
           id="controlled-tab-example"
           activeKey={key}
-          onSelect={(k) => setKey(k)}
+          onSelect={(k) => {
+            setKey(k);
+            setData([]);
+          }}
           className="mb-3"
         >
           <Tab eventKey="date" title="Specific Date">
@@ -69,7 +76,7 @@ function CashReportBhavcopy(props) {
                     <Form.Select
                       aria-label="Default select example"
                       onChange={handlePortfolioChange}
-                      value={portfolio}
+                      value={Portfolio}
                     >
                       <option>Select portfolio</option>
                       <option value="1">Swarnjeet</option>
@@ -138,7 +145,9 @@ function CashReportBhavcopy(props) {
         </Tabs>
       </div>
       <main style={{ overflow: "auto" }}>
-        {data.length ? (
+        {loader ? (
+          <Loader />
+        ) : data.length && !loader ? (
           <Table striped bordered hover>
             <thead>
               <tr>
