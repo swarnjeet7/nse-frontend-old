@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Container, Table } from "react-bootstrap";
-import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Loader from "../loader";
+import _ from "lodash";
 
 function FoReportsBhavcopy(props) {
   const style = {
@@ -12,23 +13,43 @@ function FoReportsBhavcopy(props) {
     zIndex: 3,
     background: "white",
   };
-  const [portfolio, setPortfolio] = useState("");
-  const [date, setDate] = useState("05/25/2022");
+  const [form, setForm] = useState({
+    from: "05/23/2022",
+    ExpireDate: "10/30/2022",
+  });
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
 
   const handleDateChange = (newDate) => {
-    setDate(newDate.format("MM/DD/yyyy"));
+    setForm((prevForm) => {
+      return {
+        ...prevForm,
+        from: newDate.format("MM/DD/yyyy"),
+      };
+    });
   };
 
-  const handlePortfolioChange = (value) => {
-    setPortfolio(value);
+  const handleExpireDateChange = (newDate) => {
+    setForm((prevForm) => {
+      return {
+        ...prevForm,
+        ExpireDate: newDate.format("MM/DD/yyyy"),
+      };
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoader(true);
-    fetch("/fo-reports/bhavcopy")
+    const formData = _.reduce(
+      form,
+      (str, value, key) => {
+        return (str += `${key}=${value}&`);
+      },
+      ""
+    );
+    const url = `/fo-reports/bhavcopy?${formData.slice(0, -1)}`;
+    fetch(url)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -51,7 +72,7 @@ function FoReportsBhavcopy(props) {
                 <DateRangePicker
                   initialSettings={{
                     singleDatePicker: true,
-                    startDate: date,
+                    startDate: form.from,
                   }}
                   onCallback={handleDateChange}
                 >
@@ -65,27 +86,12 @@ function FoReportsBhavcopy(props) {
                 <DateRangePicker
                   initialSettings={{
                     singleDatePicker: true,
-                    startDate: "06-29-2022",
+                    startDate: form.ExpireDate,
                   }}
-                  onCallback={handleDateChange}
+                  onCallback={handleExpireDateChange}
                 >
                   <input type="text" className="form-control col-4" />
                 </DateRangePicker>
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group controlId="select">
-                <Form.Label>Select symbol</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  onChange={handlePortfolioChange}
-                  value={portfolio}
-                >
-                  <option>Select portfolio</option>
-                  <option value="1">Swarnjeet</option>
-                  <option value="2">Manjeet</option>
-                  <option value="3">Favroute</option>
-                </Form.Select>
               </Form.Group>
             </Col>
             <Col>

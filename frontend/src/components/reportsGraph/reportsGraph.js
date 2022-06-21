@@ -2,47 +2,100 @@ import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import config from "../../config";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import _ from "lodash";
+import Loader from "../loader";
 import moment from "moment";
 import "./graph.css";
 
-function GainersLoosers(props) {
+function ReportsGraph(props) {
+  const [form, setForm] = useState({
+    Symbol: "",
+    from: "05/23/2022",
+    to: "05/27/2022",
+  });
   const [data, setData] = useState([]);
-  const [date, setDate] = useState("05/27/2022");
-  const url = `${config.BASE_URL}/cash-reports/top?date`;
-  const [symbol, setSymbol] = useState("CoalIndia");
+  const [error, setError] = useState([]);
+  const [symbols, setSymbols] = useState([]);
+  const [loader, setLoader] = useState(false);
 
   const options = {
     title: {
-      text: `${symbol} line graph from 22nd May to 27th May`,
+      text: `${form.Symbol} line graph from ${moment(
+        new Date(form.from)
+      ).format("DD MMM")} to ${moment(new Date(form.to)).format("DD MMM")}`,
     },
     yAxis: {
       title: {
         text: "Price range",
       },
     },
+    xAxis: {
+      type: "datetime",
+      labels: {
+        formatter: function () {
+          return Highcharts.dateFormat("%e %b", new Date(this.value));
+        },
+      },
+    },
+    // xAxis: {
+    //   type: "datetime",
+    //   dateTimeLabelFormats: {
+    //     day: "%e%b%y",
+    //     month: "%b '%y",
+    //   },
+    // },
     series: [
       {
-        name: symbol,
-        data: [
-          100, 150, 120, 129, 170, 200, 115, 100, 102, 100, 100, 200, 100, 150,
-          120, 129, 170, 200, 115, 100, 102, 100, 100, 200,
-        ],
+        data,
       },
     ],
   };
 
+  useEffect(() => {
+    fetch("/symbol")
+      .then((res) => res.json())
+      .then((res) => {
+        setSymbols(res.data);
+        setForm((prevForm) => {
+          return {
+            ...prevForm,
+            Symbol: res.data[0].name,
+          };
+        });
+      })
+      .catch((err) => setError(err));
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoader(true);
+    const formData = _.reduce(
+      form,
+      (str, value, key) => {
+        return (str += `${key}=${value}&`);
+      },
+      ""
+    );
+    const url = `/cash-reports/bhavcopy?${formData.slice(0, -1)}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        setData(res.data);
+        const data = res.data.map((row) => {
+          const momentDate = moment(new Date(row.Timestamp));
+          const year = momentDate.year();
+          const month = momentDate.month();
+          const day = momentDate.day();
+          const date = Date.UTC(year, month, day);
+          return [date, row.High];
+        });
+        setData(data);
+        setLoader(false);
       })
       .catch((error) => {
         console.error(error);
+        setLoader(false);
       });
   };
 
@@ -55,11 +108,20 @@ function GainersLoosers(props) {
               <Form.Label>Symbol</Form.Label>
               <Form.Select
                 aria-label="Floating label select example"
-                value={symbol}
-                onChange={(event) => setSymbol(event.target.value)}
+                value={form.Symbol}
+                onChange={(event) => {
+                  console.log(event.target.value);
+                  setForm((prevForm) => ({
+                    ...prevForm,
+                    Symbol: event.target.value,
+                  }));
+                }}
               >
-                <option value="CoalIndia">CoalIndia</option>
-                <option value="20Microne">20Microne</option>
+                {symbols.map((symbol) => (
+                  <option value={symbol.name} key={symbol._id}>
+                    {symbol.name}
+                  </option>
+                ))}
               </Form.Select>
             </Form.Group>
           </Col>
@@ -68,15 +130,20 @@ function GainersLoosers(props) {
               <Form.Label>Date</Form.Label>
               <DateRangePicker
                 initialSettings={{
-                  startDate: moment(date).add(-5, "days"),
-                  endDate: date,
+                  startDate: form.from,
+                  endDate: form.to,
                 }}
                 onCallback={(start, end) => {
-                  console.log(moment(start).format("DD/MM/yyyy"));
-                  console.log(moment(end).format("DD/MM/yyyy"));
+                  setForm((prevForm) => {
+                    return {
+                      ...prevForm,
+                      from: start,
+                      to: end,
+                    };
+                  });
                 }}
               >
-                <input type="text" className="form-control col-4" />
+                <input type="text" className="form-control col-4" required />
               </DateRangePicker>
             </Form.Group>
           </Col>
@@ -94,10 +161,18 @@ function GainersLoosers(props) {
       </Form>
 
       <main>
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        {error && <p>{error.message}</p>}
+
+        {loader ? (
+          <Loader />
+        ) : (
+          !_.isEmpty(data) && (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          )
+        )}
       </main>
     </>
   );
 }
 
-export default GainersLoosers;
+export default ReportsGraph;

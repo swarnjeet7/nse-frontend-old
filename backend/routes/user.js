@@ -12,6 +12,13 @@ router.post("/login", function (req, res) {
     User.findOne({ UserName: UserName.toLowerCase() }, function (err, user) {
       if (err) throw err;
 
+      if (!user) {
+        return res.json({
+          status: 403,
+          message: `Username: ${UserName} not exist`,
+        });
+      }
+
       // test a matching password
       user.comparePassword(Password, function (err, isMatch) {
         if (err) throw err;
@@ -22,15 +29,19 @@ router.post("/login", function (req, res) {
           UserType,
           FullName,
         };
-
         const token = jwt.sign(payload, process.env.SECRET_CODE);
-
         if (isMatch) {
           res.json({
             login: true,
             status: 200,
-            message: "You have logged in successfully",
+            message: "You have logged in successfully.",
             token,
+          });
+        } else {
+          res.json({
+            login: true,
+            status: 403,
+            message: "Password does not match.",
           });
         }
       });

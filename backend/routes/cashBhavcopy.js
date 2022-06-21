@@ -15,36 +15,53 @@ router.get("/bhavcopy", function (req, res) {
       from,
       to = moment(new Date(from)).add(1, "days").format("MM/DD/yyyy"),
       Portfolio,
+      Symbol,
     } = req.query;
+    const filter = {
+      $gte: new Date(from),
+      $lt: new Date(to),
+    };
+
+    if (Symbol) {
+      filter.Symbol = Symbol;
+    }
 
     if (Portfolio) {
-      PortfolioScript.find({ Portfolio }, (err, script) => {
+      PortfolioScript.findOne({ Portfolio }, (err, script) => {
         if (err) throw err;
-        if (!_.isEmpty(script[0].Scripts)) {
-          Cash.find(
-            {
-              $gte: new Date(from),
-              $lt: new Date(to),
-              Symbol: { $in: [...script[0].Scripts] },
-            },
-            (err, data) => {
-              if (err) throw err;
-              res.json(data);
-            }
-          );
+        if (_.isEmpty(script)) {
+          return res.json({
+            status: 200,
+            message: "data not found with this script",
+            data: [],
+          });
         }
+
+        Cash.find(
+          {
+            $gte: new Date(from),
+            $lt: new Date(to),
+            Symbol: { $in: [...script.Scripts] },
+          },
+          (err, data) => {
+            if (err) throw err;
+            res.json({
+              status: 200,
+              message: "Success",
+              data,
+            });
+          }
+        );
       });
     } else {
-      Cash.find(
-        {
-          $gte: new Date(from),
-          $lt: new Date(to),
-        },
-        (err, data) => {
-          if (err) throw err;
-          res.json(data);
-        }
-      );
+      Cash.find(filter, (err, data) => {
+        if (err) throw err;
+        res.json({
+          status: 200,
+          message: "Success",
+          data,
+        });
+      });
     }
   } catch (err) {
     res.json({ message: err.message });
@@ -87,12 +104,12 @@ router.post("/bhavcopy", function (req, res) {
 
 router.get("/top", function (req, res) {
   const {
-    type,
+    type = "gainers",
     date,
     endDate = moment(new Date(date)).add(1, "days").format("MM/DD/yyyy"),
     count = 5,
   } = req.query;
-  const order = type === "Gainers" ? "desc" : "asc";
+  const order = _.lowerCase(type) === "gainers" ? "desc" : "asc";
 
   Cash.find({
     $gte: new Date(date),

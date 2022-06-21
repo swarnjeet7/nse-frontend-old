@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const [, , removeCookie] = useCookies(["authorization"]);
+  const [, , removeCookie] = useCookies();
   const navigate = useNavigate();
 
   const handleLogout = () => {

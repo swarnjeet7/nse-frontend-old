@@ -11,6 +11,7 @@ router.get("/bhavcopy", function (req, res) {
     const {
       from,
       to = moment(new Date(from)).add(1, "days").format("MM/DD/yyyy"),
+      ExpireDate = null,
       Symbol = null,
     } = req.query;
 
@@ -21,6 +22,9 @@ router.get("/bhavcopy", function (req, res) {
 
     if (Symbol) {
       filter.Symbol = Symbol;
+    }
+    if (ExpireDate) {
+      filter.ExpireDate = { $lt: new Date(ExpireDate) };
     }
 
     FO.find(filter, function (err, docs) {

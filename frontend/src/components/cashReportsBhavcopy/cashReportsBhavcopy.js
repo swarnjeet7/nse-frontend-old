@@ -4,6 +4,8 @@ import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Loader from "../loader";
+import moment from "moment";
+import _ from "lodash";
 
 function CashReportBhavcopy(props) {
   const style = {
@@ -12,11 +14,18 @@ function CashReportBhavcopy(props) {
     zIndex: 3,
     background: "white",
   };
-  const [form, setForm] = useState({ date: "05/25/2022", Portfolio: "" });
+  const [form, setForm] = useState({
+    from: "05/23/2022",
+    Portfolio: "",
+    Symbol: "",
+  });
   const [Portfolios, setPortfolios] = useState([]);
+  const [Symbols, setSymbols] = useState([]);
   const [key, setKey] = useState("date");
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
+  const DEFAULT_PORTFOLIO_VALUE = "Select portfolio";
+  const DEFAULT_SYMBOL_VALUE = "Select symbol";
 
   useEffect(() => {
     fetch("/portfolio")
@@ -27,26 +36,58 @@ function CashReportBhavcopy(props) {
       .catch((err) => {
         console.log(err.message);
       });
+
+    fetch("/symbol")
+      .then((res) => res.json())
+      .then((res) => {
+        setSymbols(res.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   }, []);
 
   const handleDateChange = (newDate) => {
     setForm((prevForm) => ({
       ...prevForm,
-      date: newDate.format("MM/DD/yyyy"),
+      from: newDate.format("MM/DD/yyyy"),
     }));
   };
 
   const handlePortfolioChange = (event) => {
+    let value = event.target.value;
+    if (DEFAULT_PORTFOLIO_VALUE === value) {
+      value = "";
+    }
     setForm((prevForm) => ({
       ...prevForm,
-      Portfolio: event.target.value,
+      Portfolio: value,
+    }));
+  };
+
+  const handleSymbolChange = (event) => {
+    let value = event.target.value;
+    if (DEFAULT_SYMBOL_VALUE === value) {
+      value = "";
+    }
+    setForm((prevForm) => ({
+      ...prevForm,
+      Symbol: value,
     }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoader(true);
-    fetch("/cash-reports/bhavcopy")
+    const formData = _.reduce(
+      form,
+      (str, value, key) => {
+        return (str += `${key}=${value}&`);
+      },
+      ""
+    );
+    const url = `/cash-reports/bhavcopy?${formData.slice(0, -1)}`;
+    fetch(url)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
@@ -79,7 +120,7 @@ function CashReportBhavcopy(props) {
                     <DateRangePicker
                       initialSettings={{
                         singleDatePicker: true,
-                        startDate: form.date,
+                        startDate: form.from,
                       }}
                       onCallback={handleDateChange}
                     >
@@ -89,15 +130,15 @@ function CashReportBhavcopy(props) {
                 </Col>
                 <Col>
                   <Form.Group controlId="select">
-                    <Form.Label>Select portfolio</Form.Label>
+                    <Form.Label>{DEFAULT_PORTFOLIO_VALUE}</Form.Label>
                     <Form.Select
                       aria-label="Default select example"
                       onChange={handlePortfolioChange}
                       value={form.Portfolio}
                     >
-                      <option>Select portfolio</option>
+                      <option value={null}>{DEFAULT_PORTFOLIO_VALUE}</option>
                       {Portfolios.map((item) => (
-                        <option value="1" key={item._id}>
+                        <option value={item.Portfolio} key={item._id}>
                           {item.Portfolio}
                         </option>
                       ))}
@@ -127,21 +168,39 @@ function CashReportBhavcopy(props) {
               <Row>
                 <Col>
                   <Form.Group controlId="date" className="mb-3">
-                    <Form.Label>From - To</Form.Label>
-                    <DateRangePicker>
-                      <input type="text" className="form-control col-4" />
+                    <Form.Label>From - To *</Form.Label>
+                    <DateRangePicker
+                      initialSettings={{
+                        startDate: form.from,
+                        endDate: moment(new Date(form.from))
+                          .add("4", "days")
+                          .format("MM/DD/yyyy"),
+                      }}
+                      onCallback={handleDateChange}
+                    >
+                      <input
+                        type="text"
+                        className="form-control col-4"
+                        required
+                      />
                     </DateRangePicker>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="select" className="mb-5">
-                    <Form.Label>Plesae select symbol</Form.Label>
-                    <Form.Select aria-label="Default select example">
-                      <option>Select symbol</option>
-
-                      <option value="1">Swarnjeet</option>
-                      <option value="2">Manjeet</option>
-                      <option value="3">Favroute</option>
+                    <Form.Label>Select symbol *</Form.Label>
+                    <Form.Select
+                      aria-label="Default select example"
+                      required
+                      onChange={handleSymbolChange}
+                      value={form.Symbol}
+                    >
+                      <option>{DEFAULT_SYMBOL_VALUE}</option>
+                      {Symbols.map((item) => (
+                        <option value={item.name} key={item._id}>
+                          {item.name}
+                        </option>
+                      ))}
                     </Form.Select>
                   </Form.Group>
                 </Col>

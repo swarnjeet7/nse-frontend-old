@@ -1,7 +1,19 @@
+import { useState, useEffect } from "react";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 
 function CreatePortfolio() {
+  const [portfolios, setPortfolios] = useState([]);
+
   const handleSubmit = () => {};
+  const handleEditPortfolio = () => {};
+
+  useEffect(() => {
+    fetch("/portfolio")
+      .then((res) => res.json())
+      .then((res) => {
+        setPortfolios(res.data);
+      });
+  }, []);
 
   return (
     <Container fluid>
@@ -38,66 +50,34 @@ function CreatePortfolio() {
           <div className="border-bottom mb-3">Portfolio Map</div>
           <div>Portfolio's</div>
           <ul className="list-unstyled" style={{ paddingLeft: 20 }}>
-            <li
-              style={{
-                borderLeft: "1px dotted black",
-                paddingLeft: 10,
-                borderBottom: "1px dotted black",
-                height: 40,
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  background: "white",
-                  transform: "translate(0, 50%)",
-                }}
-              >
-                <Button variant="dark" size="sm">
-                  Swarnjeet
-                </Button>
-              </span>
-            </li>
-            <li
-              style={{
-                borderLeft: "1px dotted black",
-                paddingLeft: 10,
-                borderBottom: "1px dotted black",
-                height: 40,
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  background: "white",
-                  transform: "translate(0, 50%)",
-                }}
-              >
-                <Button variant="outline-dark" size="sm">
-                  Manjeet
-                </Button>
-              </span>
-            </li>
-            <li
-              style={{
-                borderLeft: "1px dotted black",
-                paddingLeft: 10,
-                borderBottom: "1px dotted black",
-                height: 40,
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  background: "white",
-                  transform: "translate(0, 50%)",
-                }}
-              >
-                <Button variant="outline-dark" size="sm">
-                  Satyaveer
-                </Button>
-              </span>
-            </li>
+            {portfolios.map((portfolio) => {
+              return (
+                <li
+                  style={{
+                    borderLeft: "1px dotted black",
+                    paddingLeft: 10,
+                    borderBottom: "1px dotted black",
+                    height: 40,
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "block",
+                      background: "white",
+                      transform: "translate(0, 50%)",
+                    }}
+                  >
+                    <Button
+                      variant="dark"
+                      size="sm"
+                      onClick={handleEditPortfolio}
+                    >
+                      {portfolio.Portfolio}
+                    </Button>
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </Col>
         <Col>

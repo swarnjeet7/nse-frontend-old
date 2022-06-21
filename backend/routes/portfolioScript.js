@@ -3,19 +3,19 @@ const router = express.Router();
 const PortfolioScript = require("../models/PortfolioScript");
 
 router.post("/", function (req, res) {
-  const { Name, Scripts } = req.body;
+  const { Portfolio, Scripts } = req.body;
 
   try {
-    PortfolioScript.findOne({ Name }, (err, script) => {
+    PortfolioScript.findOne({ Portfolio }, (err, script) => {
       if (err) throw err;
       if (script) {
-        return res.status(400).send({
-          message: `The PortfolioName with ${Name} has already been existed. Please choose another name`,
+        return res.status(403).send({
+          message: `The PortfolioName ${Portfolio} has already been existed.`,
         });
       }
 
       const portfolioScript = new PortfolioScript({
-        Name,
+        Portfolio,
         Scripts,
       });
 

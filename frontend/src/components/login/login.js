@@ -17,9 +17,9 @@ const LoginForm = () => {
     if (loginForm.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+      setValidated(true);
       return false;
     }
-    setValidated(true);
 
     try {
       fetch("/user/login", {
@@ -31,7 +31,11 @@ const LoginForm = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          setCookie("authorization", res.token, { path: "/" });
+          if (res.status === 200) {
+            setCookie("authorization", res.token, { path: "/" });
+          } else {
+            setError(res.message);
+          }
         });
     } catch (error) {
       setError(error);
@@ -49,7 +53,6 @@ const LoginForm = () => {
 
   return (
     <Container>
-      {error && <p>{error.message}</p>}
       {authCookie && <Navigate to="/dashboard" replace={true} />}
 
       <Row className="gx-5">
@@ -58,7 +61,6 @@ const LoginForm = () => {
         </div>
         <h2 className="text-center p-3">Welcome to NSE Stock Analysis</h2>
         <hr />
-        <h4 className="text-center pb-3">Please login here</h4>
         <Col
           xs={{ span: 8, offset: 1 }}
           sm={{ span: 6, offset: 3 }}
@@ -70,7 +72,7 @@ const LoginForm = () => {
               controlId="validationCustom04"
               className="mb-3"
             >
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Username *</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="UserName"
@@ -87,7 +89,7 @@ const LoginForm = () => {
               controlId="validationCustom05"
               className="mb-3"
             >
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Password *</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Password"
@@ -99,6 +101,8 @@ const LoginForm = () => {
                 Please provide a valid password.
               </Form.Control.Feedback>
             </Form.Group>
+
+            <Row>{error && <p className="h6 text-danger">{error}</p>}</Row>
 
             <Row>
               <Col className="d-flex justify-content-end">
