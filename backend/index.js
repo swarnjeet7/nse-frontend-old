@@ -20,7 +20,7 @@ const foBhavcopy = require("./routes/foBhavcopy");
 const portfolio = require("./routes/portfolio");
 const portfolioScript = require("./routes/portfolioScript");
 const user = require("./routes/user");
-const pivot = require("./routes/pivot");
+const pivots = require("./routes/pivots");
 const simbol = require("./routes/symbol");
 
 app.get("/", function (req, res) {
@@ -30,7 +30,7 @@ app.get("/", function (req, res) {
 app.use("/cash-reports", helpers.verifyToken, cashBhavcopy);
 app.use("/fo-reports", helpers.verifyToken, foBhavcopy);
 app.use("/portfolio", helpers.verifyToken, portfolio);
-app.use("/pivot", helpers.verifyToken, pivot);
+app.use("/pivots", helpers.verifyToken, pivots);
 app.use("/portfolioScript", helpers.verifyToken, portfolioScript);
 app.use("/user", user);
 app.use("/symbol", simbol);

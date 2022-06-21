@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const _ = require("lodash");
-const Pivot = require("../models/Pivot");
+const Pivots = require("../models/Pivots");
+const PortfolioScript = require("../models/PortfolioScript");
 const Cash = require("../models/Cash");
 const moment = require("moment");
 
@@ -17,7 +18,7 @@ router.get("/", function (req, res) {
       PortfolioScript.find({ Portfolio }, (err, script) => {
         if (err) throw err;
         if (!_.isEmpty(script[0].Scripts)) {
-          Pivot.find(
+          Pivots.find(
             {
               $gte: new Date(from),
               $lt: new Date(to),
@@ -25,20 +26,28 @@ router.get("/", function (req, res) {
             },
             (err, data) => {
               if (err) throw err;
-              res.json(data);
+              res.json({
+                status: 200,
+                message: "success",
+                data,
+              });
             }
           );
         }
       });
     } else {
-      Pivot.find(
+      Pivots.find(
         {
           $gte: new Date(from),
           $lt: new Date(to),
         },
         (err, data) => {
           if (err) throw err;
-          res.json(data);
+          res.json({
+            status: 200,
+            message: "success",
+            data,
+          });
         }
       );
     }
@@ -48,17 +57,37 @@ router.get("/", function (req, res) {
 });
 
 router.post("/", function (req, res) {
-  const date = req.query.from;
-  const from = moment(new Date(date)).add(-1, "days").format("MM/DD/yyyy");
+  const {
+    from,
+    to = moment(new Date(from)).add(1, "days").format("MM/DD/yyyy"),
+  } = req.body;
 
   try {
+    Pivots.find(
+      {
+        $gte: new Date(from),
+        $lt: new Date(to),
+      },
+      (err, data) => {
+        if (err) return err;
+        if (!_.isEmpty(data)) {
+          return res.json({
+            status: 400,
+            message: "The data already been existed",
+            data,
+          });
+        }
+      }
+    );
+
     Cash.find(
       {
         $gte: new Date(from),
-        $lt: new Date(date),
+        $lt: new Date(to),
       },
       (err, data) => {
         if (err) throw err;
+
         _.map(data, (row) => {
           const { Symbol, Series, High, Low, Close } = row;
           const P = (High + Low + Close) / 3;
@@ -69,7 +98,7 @@ router.post("/", function (req, res) {
           const R3 = P - S2 + R2;
           const S3 = P - (R2 - S2);
 
-          const pivot = new Pivot({
+          const pivots = new Pivots({
             Symbol,
             Series,
             P,
@@ -79,11 +108,11 @@ router.post("/", function (req, res) {
             S2,
             R3,
             S3,
-            date,
+            Timestamp: new Date(from),
           });
-
-          pivot.save();
+          pivots.save();
         });
+
         res.json({
           status: 200,
           message: "Pivot table has been created successfully",

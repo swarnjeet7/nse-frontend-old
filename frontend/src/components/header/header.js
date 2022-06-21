@@ -54,8 +54,13 @@ function Header() {
                 </NavDropdown.Item>
               </NavDropdown>
 
-              <NavDropdown title="Pivot" id="pivot-dropdown">
-                <NavDropdown.Item href="/pivot">Show Pivot</NavDropdown.Item>
+              <NavDropdown title="Pivots" id="pivot-dropdown">
+                <NavDropdown.Item href="/pivots/create">
+                  Create Pivots
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/pivots/show">
+                  Show Pivots
+                </NavDropdown.Item>
               </NavDropdown>
 
               <NavDropdown title="Portfolio" id="portfolio-dropdown">

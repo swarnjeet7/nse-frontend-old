@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const PivotSchema = mongoose.Schema({
+const PivotsSchema = mongoose.Schema({
   Symbol: {
     type: String,
     required: true,
@@ -58,10 +58,10 @@ const PivotSchema = mongoose.Schema({
       return v.toFixed(2);
     },
   },
-  date: {
+  Timestamp: {
     type: Date,
     required: true,
   },
 });
 
-module.exports = mongoose.model("Pivot", PivotSchema, "Pivot");
+module.exports = mongoose.model("Pivots", PivotsSchema, "Pivots");
