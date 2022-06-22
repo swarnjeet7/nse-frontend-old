@@ -57,7 +57,7 @@ const LoginForm = () => {
 
       <Row className="gx-5">
         <div className="text-center mt-2">
-          <img src="/logo-large.png" alt="logo" />
+          <img src="/logo-large.png" alt="logo" width="150" />
         </div>
         <h2 className="text-center p-3">Welcome to NSE Stock Analysis</h2>
         <hr />
