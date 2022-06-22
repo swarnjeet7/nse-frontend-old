@@ -65,24 +65,20 @@ router.post("/", function (req, res) {
 });
 
 router.patch("/", function (req, res) {
-  const { id, Name, PortfolioName, Address } = req.body;
+  const { Portfolio, FullName, Address } = req.body;
+
   try {
-    PortfolioModal.findOne({ _id: id }).exec((err, portfolio) => {
+    PortfolioModal.findOne({ Portfolio }).exec((err, portfolio) => {
       if (err) throw err;
       if (!portfolio) {
         return res.status(400).send({
           message: `The user not found`,
         });
       }
-      if (Name) {
-        portfolio.Name = Name;
-      }
-      if (PortfolioName) {
-        portfolio.PortfolioName = PortfolioName;
-      }
-      if (Address) {
-        portfolio.Address = Address;
-      }
+      portfolio.FullName = FullName;
+      portfolio.Portfolio = Portfolio;
+      portfolio.Address = Address;
+
       portfolio.save().then((user) => {
         res.json({
           status: 200,
