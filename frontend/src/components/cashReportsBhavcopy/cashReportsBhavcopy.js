@@ -37,7 +37,7 @@ function CashReportBhavcopy(props) {
         console.log(err.message);
       });
 
-    fetch("/symbol")
+    fetch("/symbols")
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);

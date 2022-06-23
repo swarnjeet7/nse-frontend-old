@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 
 function CreatePortfolio() {
+  const activeBtn = useRef(null);
   const [portfolios, setPortfolios] = useState([]);
   const [loader, setLoader] = useState(false);
   const DEFAULT_FORM = {
@@ -114,6 +115,17 @@ function CreatePortfolio() {
     });
   };
 
+  const handleClassActive = (el) => {
+    const currentEl = activeBtn.current;
+    if (currentEl) {
+      currentEl.classList.remove("btn-dark");
+      currentEl.classList.add("btn-outline-dark");
+    }
+    el.classList.add("btn-dark");
+    el.classList.remove("btn-outline-dark");
+    activeBtn.current = el;
+  };
+
   useEffect(() => {
     getAllPortfolio();
   }, []);
@@ -211,9 +223,12 @@ function CreatePortfolio() {
                     }}
                   >
                     <Button
-                      variant="dark"
+                      variant="outline-dark"
                       size="sm"
-                      onClick={() => handleEditPortfolio(portfolio)}
+                      onClick={(event) => {
+                        handleClassActive(event.target);
+                        handleEditPortfolio(portfolio);
+                      }}
                     >
                       {portfolio.Portfolio}
                     </Button>

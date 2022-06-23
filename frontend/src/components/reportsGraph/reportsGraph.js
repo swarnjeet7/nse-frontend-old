@@ -39,13 +39,6 @@ function ReportsGraph(props) {
         },
       },
     },
-    // xAxis: {
-    //   type: "datetime",
-    //   dateTimeLabelFormats: {
-    //     day: "%e%b%y",
-    //     month: "%b '%y",
-    //   },
-    // },
     series: [
       {
         data,
@@ -54,7 +47,7 @@ function ReportsGraph(props) {
   };
 
   useEffect(() => {
-    fetch("/symbol")
+    fetch("/symbols")
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);

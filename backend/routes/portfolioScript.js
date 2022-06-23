@@ -2,6 +2,26 @@ const express = require("express");
 const router = express.Router();
 const PortfolioScript = require("../models/PortfolioScript");
 
+router.get("/", function (req, res) {
+  const { Portfolio } = req.query;
+
+  try {
+    PortfolioScript.findOne({ Portfolio }, (err, script) => {
+      if (err) throw err;
+      return res.status(200).send({
+        status: 200,
+        message: "success",
+        data: script || {
+          Portfolio,
+          Scripts: [],
+        },
+      });
+    });
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
+});
+
 router.post("/", function (req, res) {
   const { Portfolio, Scripts } = req.body;
 

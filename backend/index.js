@@ -19,9 +19,9 @@ const cashBhavcopy = require("./routes/cashBhavcopy");
 const foBhavcopy = require("./routes/foBhavcopy");
 const portfolio = require("./routes/portfolio");
 const portfolioScript = require("./routes/portfolioScript");
-const user = require("./routes/user");
+const users = require("./routes/users");
 const pivots = require("./routes/pivots");
-const simbol = require("./routes/symbol");
+const simbols = require("./routes/symbols");
 
 app.get("/", function (req, res) {
   res.send("App working");
@@ -32,8 +32,8 @@ app.use("/fo-reports", helpers.verifyToken, foBhavcopy);
 app.use("/portfolio", helpers.verifyToken, portfolio);
 app.use("/pivots", helpers.verifyToken, pivots);
 app.use("/portfolioScript", helpers.verifyToken, portfolioScript);
-app.use("/user", user);
-app.use("/symbol", simbol);
+app.use("/user", users);
+app.use("/symbols", simbols);
 
 mongoose.connect(
   process.env.DB_CONNECTION_URL,
