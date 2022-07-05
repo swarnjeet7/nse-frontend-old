@@ -5,6 +5,21 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const helpers = require("../utilities/helper");
 
+router.get("/all", helpers.verifyToken, function (req, res) {
+  try {
+    User.find({}, (err, docs) => {
+      if (err) throw err;
+      res.json({
+        status: 200,
+        message: `success`,
+        data: docs,
+      });
+    });
+  } catch (err) {
+    res.json({ message: err.message });
+  }
+});
+
 router.post("/login", function (req, res) {
   const { UserName, Password } = req.body;
 

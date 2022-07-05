@@ -49,7 +49,7 @@ function ManagePortfolio() {
     fetch("/symbols")
       .then((res) => res.json())
       .then((res) => {
-        setPortfolios(res.data);
+        setSymbols(res.data);
       });
   }, []);
 
@@ -79,9 +79,8 @@ function ManagePortfolio() {
                     height: 40,
                   }}
                 >
-                  <span
+                  <div
                     style={{
-                      display: "block",
                       background: "white",
                       transform: "translate(0, 50%)",
                     }}
@@ -96,7 +95,7 @@ function ManagePortfolio() {
                     >
                       {portfolio.Portfolio}
                     </Button>
-                  </span>
+                  </div>
                 </li>
               );
             })}

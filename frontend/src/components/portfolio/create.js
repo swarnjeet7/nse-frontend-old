@@ -11,9 +11,9 @@ function CreatePortfolio() {
     Address: "",
   };
   const [form, setForm] = useState(DEFAULT_FORM);
-  const [formValidated, setformValidated] = useState(false);
+  const [formValidated, setFormValidated] = useState(false);
   const [updateForm, setUpdateForm] = useState(DEFAULT_FORM);
-  const [updateFormValidated, setupdateFormValidated] = useState(false);
+  const [updateFormValidated, setUpdateFormValidated] = useState(false);
   const [updateMsg, setUpdateMsg] = useState("");
   const [error, setError] = useState(null);
 
@@ -24,7 +24,7 @@ function CreatePortfolio() {
     if (portfolioForm.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-      setformValidated(true);
+      setFormValidated(true);
       setLoader(false);
       return false;
     }
@@ -55,7 +55,7 @@ function CreatePortfolio() {
     const portfolioForm = event.currentTarget;
     if (portfolioForm.checkValidity() === false) {
       event.stopPropagation();
-      setupdateFormValidated(true);
+      setUpdateFormValidated(true);
       setLoader(false);
       return false;
     }

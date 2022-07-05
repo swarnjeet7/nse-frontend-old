@@ -90,7 +90,7 @@ function CashReportBhavcopy(props) {
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        setData(res);
+        setData(res.data);
         setLoader(false);
       })
       .catch((error) => {

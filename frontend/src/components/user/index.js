@@ -1,3 +1,3 @@
-import ManageUser from "./manage";
+import User from "./user";
 
-export default ManageUser;
+export default User;

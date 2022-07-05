@@ -62,4 +62,11 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
   });
 };
 
+UserSchema.methods.normalizePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.Password, function (err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
+
 module.exports = mongoose.model("User", UserSchema, "Users");
