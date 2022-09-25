@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/nse-frontend/static/css/main.884ef00d.css",
+    "main.js": "/nse-frontend/static/js/main.86943c0e.js",
+    "index.html": "/nse-frontend/index.html",
+    "main.884ef00d.css.map": "/nse-frontend/static/css/main.884ef00d.css.map",
+    "main.86943c0e.js.map": "/nse-frontend/static/js/main.86943c0e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.884ef00d.css",
+    "static/js/main.86943c0e.js"
+  ]
+}
