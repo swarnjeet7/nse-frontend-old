@@ -1,5 +1,5 @@
 {
-  "name": "nse_frontend",
+  "name": "nse-frontend",
   "version": "0.1.0",
   "private": true,
   "proxy": "https://nse-stock-exchange.herokuapp.com",
