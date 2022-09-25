@@ -4,18 +4,17 @@ import {
   Form,
   Row,
   Col,
-  Button,
   Toast,
   ToastContainer,
 } from "react-bootstrap";
 import _ from "lodash";
-import Loader from "../loader";
+import Button from "molecule/button";
 
 function User() {
   const activeBtn = useRef();
   const DEFAULT_FORM = {
     UserName: "",
-    UserType: "",
+    UserType: "Executive",
     FullName: "",
     Password: "",
     ConfirmPassword: "",
@@ -25,25 +24,26 @@ function User() {
   const [formValidated, setFormValidated] = useState(false);
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [creatUserLoader, setCreatUserLoader] = useState(false);
+  const [updateUserLoader, setUpdateUserLoader] = useState(false);
   const [updateForm, setUpdateForm] = useState(DEFAULT_FORM);
   const [updateFormValidated, setUpdateFormValidated] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleCreateUserSubmit = (event) => {
     event.preventDefault();
-    setLoader(true);
+    event.stopPropagation();
+    setCreatUserLoader(true);
     const userForm = event.currentTarget;
     if (form.ConfirmPassword !== form.Password) {
       setShowToast(true);
       setMessage("Password and ConfirmPassword does not match");
-      setLoader(false);
+      setCreatUserLoader(false);
       return;
     }
     if (userForm.checkValidity() === false) {
-      event.stopPropagation();
       setFormValidated(true);
-      setLoader(false);
+      setCreatUserLoader(false);
       return false;
     }
 
@@ -56,22 +56,22 @@ function User() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setLoader(false);
         if (res.status === 200) {
           setMessage("User has been added successfully");
           setForm(DEFAULT_FORM);
           getAllUsers();
         }
+        setCreatUserLoader(false);
       })
       .catch((error) => {
         setMessage(error.message);
-        setLoader(false);
+        setCreatUserLoader(false);
       });
   };
 
-  const handleUpdateSubmit = (event) => {
+  const handleUpdateUserSubmit = (event) => {
     event.preventDefault();
-    setLoader(true);
+    setUpdateUserLoader(true);
     const userForm = event.currentTarget;
     if (updateForm.ConfirmPassword !== updateForm.Password) {
       showToast(true);
@@ -80,7 +80,7 @@ function User() {
     if (userForm.checkValidity() === false) {
       event.stopPropagation();
       setUpdateFormValidated(true);
-      setLoader(false);
+      setUpdateUserLoader(false);
       return false;
     }
     fetch("/user/update", {
@@ -92,7 +92,7 @@ function User() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setLoader(false);
+        setUpdateUserLoader(false);
         if (res.status === 200) {
           setMessage("User has been updated successfully");
           setUpdateForm(DEFAULT_FORM);
@@ -101,7 +101,7 @@ function User() {
       })
       .catch((error) => {
         setMessage(error.message);
-        setLoader(false);
+        setUpdateUserLoader(false);
       });
   };
 
@@ -170,7 +170,11 @@ function User() {
         <Row>
           <Col className="border-right">
             <div className="border-bottom mb-3">Create User</div>
-            <Form noValidate validated={formValidated} onSubmit={handleSubmit}>
+            <Form
+              noValidate
+              validated={formValidated}
+              onSubmit={handleCreateUserSubmit}
+            >
               <Form.Group className="mb-3">
                 <Form.Label>User Name</Form.Label>
                 <Form.Control
@@ -194,8 +198,8 @@ function User() {
                   onChange={handleInputChange}
                   required
                 >
-                  <option value="Executive">Executive</option>
                   <option value="Manager">Manager</option>
+                  <option value="Executive">Executive</option>
                   <option value="Admin">Admin</option>
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
@@ -248,10 +252,10 @@ function User() {
                 <Col className="d-flex justify-content-end">
                   <Button
                     variant="outline-primary"
-                    type="submit"
                     className="w-100"
+                    isWaiting={creatUserLoader}
                   >
-                    {loader ? <Loader /> : "Creat User"}
+                    Creat User
                   </Button>
                 </Col>
               </Row>
@@ -302,7 +306,7 @@ function User() {
             <Form
               noValidate
               validated={updateFormValidated}
-              onSubmit={handleUpdateSubmit}
+              onSubmit={handleUpdateUserSubmit}
             >
               <Form.Group className="mb-3">
                 <Form.Label>User Name</Form.Label>
@@ -362,8 +366,8 @@ function User() {
                 <Col className="d-flex justify-content-end">
                   <Button
                     variant="outline-primary"
-                    type="submit"
                     className="w-100"
+                    isWaiting={updateUserLoader}
                   >
                     Update User
                   </Button>

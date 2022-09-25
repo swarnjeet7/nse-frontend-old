@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import _ from "lodash";
-import { Container, Form, Row, Col, Button, Table } from "react-bootstrap";
+import { Container, Form, Row, Col, Table } from "react-bootstrap";
 import Loader from "../loader";
+import Button from "molecule/button";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 
@@ -110,8 +111,9 @@ function ShowPivots() {
                 </Form.Label>
                 <Button
                   variant="outline-primary"
-                  type="submit"
                   className="w-100"
+                  fill="#0d6efd"
+                  isWaiting={loader}
                 >
                   Submit
                 </Button>
@@ -122,7 +124,7 @@ function ShowPivots() {
       </div>
       <main style={{ overflow: "auto" }}>
         {loader ? (
-          <Loader />
+          <Loader type="circle" fill="#0d6efd" />
         ) : data.length ? (
           <Table striped bordered hover>
             <thead>

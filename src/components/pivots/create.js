@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { Container, Form, Row, Col } from "react-bootstrap";
 import Loader from "../loader";
+import Button from "molecule/button";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 
@@ -28,10 +29,10 @@ function CreatePivot() {
       .then((res) => res.json())
       .then((res) => {
         setMessage(res.message);
-        setLoader(false);
+        // setLoader(false);
       })
       .catch((error) => {
-        setLoader(false);
+        // setLoader(false);
         console.error(error);
       });
   };
@@ -63,8 +64,9 @@ function CreatePivot() {
                 </Form.Label>
                 <Button
                   variant="outline-primary"
-                  type="submit"
                   className="w-100"
+                  fill="#0d6efd"
+                  isWaiting={loader}
                 >
                   Submit
                 </Button>
@@ -75,7 +77,7 @@ function CreatePivot() {
       </div>
       <main style={{ overflow: "auto" }}>
         {loader ? (
-          <Loader />
+          <Loader type="circle" fill="#0d6efd" />
         ) : (
           <h4 className="text-center">
             {message

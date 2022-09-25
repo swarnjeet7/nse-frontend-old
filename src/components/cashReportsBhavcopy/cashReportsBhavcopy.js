@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Container, Table } from "react-bootstrap";
-import { Button, Tabs, Tab, Form, Row, Col } from "react-bootstrap";
+import { Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Loader from "../loader";
+import Button from "molecule/button";
 import moment from "moment";
 import _ from "lodash";
 
@@ -152,8 +153,9 @@ function CashReportBhavcopy(props) {
                     </Form.Label>
                     <Button
                       variant="outline-primary"
-                      type="submit"
                       className="w-100"
+                      isWaiting={loader}
+                      fill="#0d6efd"
                     >
                       Submit
                     </Button>
@@ -211,8 +213,9 @@ function CashReportBhavcopy(props) {
                     </Form.Label>
                     <Button
                       variant="outline-primary"
-                      type="submit"
                       className="w-100"
+                      isWaiting={loader}
+                      fill="#0d6efd"
                     >
                       Submit
                     </Button>
@@ -225,7 +228,7 @@ function CashReportBhavcopy(props) {
       </div>
       <main style={{ overflow: "auto" }}>
         {loader ? (
-          <Loader />
+          <Loader type="circle" fill="#0d6efd" />
         ) : data.length && !loader ? (
           <Table striped bordered hover>
             <thead>

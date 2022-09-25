@@ -12,7 +12,7 @@ export default function Dashboard() {
             </h3>
           </main>
         </Col>
-        <Col>
+        {/* <Col>
           <aside>
             <Alert variant="warning">
               Date: {moment().format("DD MMM yyyy")}
@@ -20,7 +20,7 @@ export default function Dashboard() {
             <Alert variant="success">Top Gainer: TATAMOTERS</Alert>
             <Alert variant="danger">Top Loosers: Airete</Alert>
           </aside>
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );

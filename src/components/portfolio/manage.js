@@ -7,6 +7,7 @@ import {
   CloseButton,
 } from "react-bootstrap";
 import { useEffect, useState, useRef } from "react";
+import SearchComponent from "../searchComponent/searchComponent";
 
 function ManagePortfolio() {
   const activeBtn = useRef(null);
@@ -65,7 +66,14 @@ function ManagePortfolio() {
     <Container fluid>
       <Row>
         <Col>
-          <div className="border-bottom mb-3">Portfolio Map</div>
+          <div
+            className="border-bottom mb-3"
+            style={{
+              height: 33,
+            }}
+          >
+            Portfolio Map
+          </div>
           <div>Portfolio's</div>
           <ul className="list-unstyled" style={{ paddingLeft: 20 }}>
             {portfolios.map((portfolio) => {
@@ -106,11 +114,7 @@ function ManagePortfolio() {
             <Row>
               <Col>Portfolio Scripts</Col>
               <Col>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="search symbol to add"
-                />
+                <SearchComponent data={symbols} isEnable={!activeBtn.current} />
               </Col>
             </Row>
           </div>
@@ -124,7 +128,7 @@ function ManagePortfolio() {
                   width="20"
                   height="20"
                   fill="currentColor"
-                  class="bi bi-x"
+                  className="bi bi-x"
                   viewBox="0 0 16 16"
                   onClick={() => handleRemoveSymbol(symbol, i)}
                 >

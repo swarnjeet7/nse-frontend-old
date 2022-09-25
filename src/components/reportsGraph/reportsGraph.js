@@ -1,9 +1,18 @@
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
+import Button from "molecule/button";
 import { useState, useEffect } from "react";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import _ from "lodash";
 import Loader from "../loader";
 import moment from "moment";
@@ -16,35 +25,9 @@ function ReportsGraph(props) {
     to: "05/27/2022",
   });
   const [data, setData] = useState([]);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState(false);
   const [symbols, setSymbols] = useState([]);
   const [loader, setLoader] = useState(false);
-
-  const options = {
-    title: {
-      text: `${form.Symbol} line graph from ${moment(
-        new Date(form.from)
-      ).format("DD MMM")} to ${moment(new Date(form.to)).format("DD MMM")}`,
-    },
-    yAxis: {
-      title: {
-        text: "Price range",
-      },
-    },
-    xAxis: {
-      type: "datetime",
-      labels: {
-        formatter: function () {
-          return Highcharts.dateFormat("%e %b", new Date(this.value));
-        },
-      },
-    },
-    series: [
-      {
-        data,
-      },
-    ],
-  };
 
   useEffect(() => {
     fetch("/symbols")
@@ -77,12 +60,19 @@ function ReportsGraph(props) {
       .then((res) => {
         const data = res.data.map((row) => {
           const momentDate = moment(new Date(row.Timestamp));
+          console.log("date", momentDate);
           const year = momentDate.year();
           const month = momentDate.month();
           const day = momentDate.day();
-          const date = Date.UTC(year, month, day);
-          return [date, row.High];
+          // const date = Date.UTC(year, month, day);
+          // return [date, row.High];
+          return {
+            date: `${day}-${month}-${year}`,
+            [form.Symbol]: row.High,
+            // amt: row.High,
+          };
         });
+        console.log(data);
         setData(data);
         setLoader(false);
       })
@@ -145,7 +135,11 @@ function ReportsGraph(props) {
               <Form.Label>
                 <span style={{ color: "transparent" }}>button</span>
               </Form.Label>
-              <Button variant="outline-primary" type="submit" className="w-100">
+              <Button
+                variant="outline-primary"
+                className="w-100"
+                isWaiting={loader}
+              >
                 Submit
               </Button>
             </Form.Group>
@@ -157,10 +151,27 @@ function ReportsGraph(props) {
         {error && <p>{error.message}</p>}
 
         {loader ? (
-          <Loader />
+          <Loader type="circle" fill="#0d6efd" />
         ) : (
           !_.isEmpty(data) && (
-            <HighchartsReact highcharts={Highcharts} options={options} />
+            <LineChart
+              className="mt-4 m-auto"
+              width={800}
+              height={500}
+              data={data}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey={form.Symbol}
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+            </LineChart>
           )
         )}
       </main>

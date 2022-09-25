@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import _ from "lodash";
+import React, { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import _ from "lodash";
+import { Form, Container, Row, Col } from "react-bootstrap";
+import Button from "molecule/button";
 
 const LoginForm = () => {
   const [cookies, setCookie] = useCookies(["authorization"]);
@@ -10,6 +11,8 @@ const LoginForm = () => {
   const [error, setError] = useState(null);
   const [validated, setValidated] = useState(false);
   const authCookie = _.get(cookies, "authorization");
+  const [loader, setLoader] = useState(false);
+  // const { useContext } = useContext();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -22,6 +25,7 @@ const LoginForm = () => {
     }
 
     try {
+      setLoader(true);
       fetch("/user/login", {
         method: "POST",
         body: JSON.stringify(form),
@@ -36,8 +40,10 @@ const LoginForm = () => {
           } else {
             setError(res.message);
           }
+          setLoader(false);
         });
     } catch (error) {
+      setLoader(false);
       setError(error);
     }
   };
@@ -106,9 +112,7 @@ const LoginForm = () => {
 
             <Row>
               <Col className="d-flex justify-content-end">
-                <Button variant="primary" type="submit">
-                  Submit
-                </Button>
+                <Button isWaiting={loader}>Submit</Button>
               </Col>
             </Row>
           </Form>

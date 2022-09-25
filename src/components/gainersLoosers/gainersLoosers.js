@@ -1,7 +1,8 @@
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import { Form, Row, Col, Button, Table } from "react-bootstrap";
+import { Form, Row, Col, Table } from "react-bootstrap";
 import { useState } from "react";
+import Button from "molecule/button";
 
 function GainersLoosers(props) {
   const style = {
@@ -14,6 +15,7 @@ function GainersLoosers(props) {
   const [topType, setTopType] = useState("Gainers");
   const [date, setDate] = useState("05/25/2022");
   const [count, setCount] = useState(10);
+  const [loader, setLoader] = useState(false);
 
   const handleDateChange = (newDate) => {
     setDate(newDate.format("MM/DD/yyyy"));
@@ -21,13 +23,16 @@ function GainersLoosers(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoader(true);
     fetch(`/cash-reports/top?type=${topType}&date=${date}&count=${count}`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+        setLoader(false);
       })
       .catch((error) => {
         console.error(error);
+        setLoader(false);
       });
   };
 
@@ -78,7 +83,12 @@ function GainersLoosers(props) {
               <Form.Label>
                 <span style={{ color: "transparent" }}>button</span>
               </Form.Label>
-              <Button variant="outline-primary" type="submit" className="w-100">
+              <Button
+                variant="outline-primary"
+                className="w-100"
+                isWaiting={loader}
+                fill="#0d6efd"
+              >
                 Submit
               </Button>
             </Form.Group>

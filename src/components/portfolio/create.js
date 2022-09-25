@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-import { Container, Form, Row, Col, Button } from "react-bootstrap";
+import { Container, Form, Row, Col } from "react-bootstrap";
+import Button from "molecule/button";
 
 function CreatePortfolio() {
-  const activeBtn = useRef(null);
-  const [portfolios, setPortfolios] = useState([]);
-  const [loader, setLoader] = useState(false);
   const DEFAULT_FORM = {
     Portfolio: "",
     FullName: "",
     Address: "",
   };
+  const activeBtn = useRef(null);
+  const [portfolios, setPortfolios] = useState([]);
+  const [creatUserLoader, setCreatUserLoader] = useState(false);
+  const [updateUserLoader, setUpdateUserLoader] = useState(false);
   const [form, setForm] = useState(DEFAULT_FORM);
   const [formValidated, setFormValidated] = useState(false);
   const [updateForm, setUpdateForm] = useState(DEFAULT_FORM);
@@ -17,15 +19,15 @@ function CreatePortfolio() {
   const [updateMsg, setUpdateMsg] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleCreateUserSubmit = (event) => {
     event.preventDefault();
-    setLoader(true);
+    setCreatUserLoader(true);
     const portfolioForm = event.currentTarget;
     if (portfolioForm.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
       setFormValidated(true);
-      setLoader(false);
+      setCreatUserLoader(false);
       return false;
     }
     fetch("/portfolio", {
@@ -37,7 +39,7 @@ function CreatePortfolio() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setLoader(false);
+        setCreatUserLoader(false);
         if (res.status === 200) {
           setForm(DEFAULT_FORM);
           getAllPortfolio();
@@ -45,18 +47,18 @@ function CreatePortfolio() {
       })
       .catch((error) => {
         setError(error.message);
-        setLoader(false);
+        setCreatUserLoader(false);
       });
   };
 
-  const handleUpdateSubmit = (event) => {
+  const handleUpdateUserSubmit = (event) => {
     event.preventDefault();
-    setLoader(true);
+    setUpdateUserLoader(true);
     const portfolioForm = event.currentTarget;
     if (portfolioForm.checkValidity() === false) {
       event.stopPropagation();
       setUpdateFormValidated(true);
-      setLoader(false);
+      setUpdateUserLoader(false);
       return false;
     }
     fetch("/portfolio", {
@@ -68,7 +70,7 @@ function CreatePortfolio() {
     })
       .then((res) => res.json())
       .then((res) => {
-        setLoader(false);
+        setUpdateUserLoader(false);
         setUpdateMsg(res.message);
         if (res.status === 200) {
           getAllPortfolio();
@@ -79,7 +81,7 @@ function CreatePortfolio() {
         setError(
           error.message || "Something went wrong. Please try after some time"
         );
-        setLoader(false);
+        setUpdateUserLoader(false);
       });
   };
 
@@ -143,7 +145,11 @@ function CreatePortfolio() {
       <Row>
         <Col className="border-right">
           <div className="border-bottom mb-3">Create Portfolio</div>
-          <Form noValidate validated={formValidated} onSubmit={handleSubmit}>
+          <Form
+            noValidate
+            validated={formValidated}
+            onSubmit={handleCreateUserSubmit}
+          >
             <Form.Group className="mb-3">
               <Form.Label>Portfolio Name</Form.Label>
               <Form.Control
@@ -190,8 +196,9 @@ function CreatePortfolio() {
               <Col className="d-flex justify-content-end">
                 <Button
                   variant="outline-primary"
-                  type="submit"
                   className="w-100"
+                  fill="#0d6efd"
+                  isWaiting={creatUserLoader}
                 >
                   Creat Portfolio
                 </Button>
@@ -223,6 +230,7 @@ function CreatePortfolio() {
                     }}
                   >
                     <Button
+                      fill="#0d6efd"
                       variant="outline-dark"
                       size="sm"
                       onClick={(event) => {
@@ -244,7 +252,7 @@ function CreatePortfolio() {
           <Form
             noValidate
             validated={updateFormValidated}
-            onSubmit={handleUpdateSubmit}
+            onSubmit={handleUpdateUserSubmit}
           >
             <Form.Group className="mb-3">
               <Form.Label>Portfolio Name</Form.Label>
@@ -301,8 +309,9 @@ function CreatePortfolio() {
               <Col className="d-flex justify-content-end">
                 <Button
                   variant="outline-primary"
-                  type="submit"
                   className="w-100"
+                  fill="#0d6efd"
+                  isWaiting={updateUserLoader}
                 >
                   Update Portfolio
                 </Button>

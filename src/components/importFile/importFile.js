@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 import {
   Form,
-  Button,
   Container,
   Row,
   Col,
   Toast,
   ToastContainer,
 } from "react-bootstrap";
+import Button from "molecule/button";
 
 function ImportFile(props) {
   const inputRef = useRef(null);
@@ -16,6 +16,7 @@ function ImportFile(props) {
   const [msg, setMsg] = useState("");
   const [show, setShow] = useState(false);
   const { title } = props;
+  const [loader, setLoader] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -27,7 +28,7 @@ function ImportFile(props) {
     formData.append("file", file);
     setError(true);
     const url = `/${title === "FO" ? "fo-reports" : "cash-reports"}/bhavcopy`;
-
+    setLoader(true);
     fetch(url, {
       method: "POST",
       body: formData,
@@ -41,9 +42,11 @@ function ImportFile(props) {
           setShow(true);
           inputRef.current.value = "";
         }
+        setLoader(true);
       })
       .catch((error) => {
         console.error(error);
+        setLoader(true);
       });
   };
 
@@ -79,9 +82,7 @@ function ImportFile(props) {
               <Row>
                 <Col className="d-flex justify-content-end">
                   <div className="d-grid gap-2">
-                    <Button variant="primary" type="submit">
-                      Submit
-                    </Button>
+                    <Button isWaiting={loader}>Submit</Button>
                   </div>
                 </Col>
               </Row>
