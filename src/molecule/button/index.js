@@ -1,3 +1,3 @@
-import Button from "./button";
+import Btn from "./button";
 
-export default Button;
+export default Btn;

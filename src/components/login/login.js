@@ -1,9 +1,9 @@
 import _ from "lodash";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Form, Container, Row, Col } from "react-bootstrap";
-import Button from "molecule/button";
+import Button from "../../molecule/button";
 
 const LoginForm = () => {
   const [cookies, setCookie] = useCookies(["authorization"]);
@@ -12,7 +12,6 @@ const LoginForm = () => {
   const [validated, setValidated] = useState(false);
   const authCookie = _.get(cookies, "authorization");
   const [loader, setLoader] = useState(false);
-  // const { useContext } = useContext();
 
   const handleSubmit = (event) => {
     event.preventDefault();

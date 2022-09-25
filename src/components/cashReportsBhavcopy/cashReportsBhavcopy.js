@@ -4,7 +4,7 @@ import { Tabs, Tab, Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Loader from "../loader";
-import Button from "molecule/button";
+import Button from "../../molecule/button";
 import moment from "moment";
 import _ from "lodash";
 

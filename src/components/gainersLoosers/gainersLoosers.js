@@ -2,7 +2,7 @@ import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import { Form, Row, Col, Table } from "react-bootstrap";
 import { useState } from "react";
-import Button from "molecule/button";
+import Button from "../../molecule/button";
 
 function GainersLoosers(props) {
   const style = {

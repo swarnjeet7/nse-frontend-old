@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Table } from "react-bootstrap";
 import { Form, Row, Col } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
-import Button from "molecule/button";
+import Button from "../../molecule/button";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Loader from "../loader";
 import _ from "lodash";

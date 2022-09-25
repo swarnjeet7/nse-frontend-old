@@ -8,7 +8,7 @@ import {
   ToastContainer,
 } from "react-bootstrap";
 import _ from "lodash";
-import Button from "molecule/button";
+import Button from "../../molecule/button";
 
 function User() {
   const activeBtn = useRef();

@@ -1,5 +1,4 @@
-import { Row, Alert, Col } from "react-bootstrap";
-import moment from "moment";
+import { Row, Col } from "react-bootstrap";
 
 export default function Dashboard() {
   return (
@@ -12,15 +11,6 @@ export default function Dashboard() {
             </h3>
           </main>
         </Col>
-        {/* <Col>
-          <aside>
-            <Alert variant="warning">
-              Date: {moment().format("DD MMM yyyy")}
-            </Alert>
-            <Alert variant="success">Top Gainer: TATAMOTERS</Alert>
-            <Alert variant="danger">Top Loosers: Airete</Alert>
-          </aside>
-        </Col> */}
       </Row>
     </div>
   );

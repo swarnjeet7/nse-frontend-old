@@ -18,6 +18,7 @@ import "./App.css";
 //   UserType: "",
 //   UpdateUserType: (UserType) => (this.UserType = UserType),
 // };
+
 const AppContext = createContext();
 
 function App() {

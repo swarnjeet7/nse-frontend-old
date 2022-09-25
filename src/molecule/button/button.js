@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import Loader from "components/loader";
+import Loader from "../../components/loader";
 
 function Btn(props) {
   const {
