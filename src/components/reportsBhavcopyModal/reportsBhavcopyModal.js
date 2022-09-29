@@ -30,7 +30,10 @@ function ReportsBhavcopyModal(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         props.setData(res.data);

@@ -8,6 +8,7 @@ import Button from "../../molecule/button";
 import moment from "moment";
 import _ from "lodash";
 import config from "../../config";
+import { getData } from "../../utilities/fetchData";
 
 function CashReportBhavcopy(props) {
   const style = {
@@ -30,7 +31,11 @@ function CashReportBhavcopy(props) {
   const DEFAULT_SYMBOL_VALUE = "Select symbol";
 
   useEffect(() => {
-    fetch(`${config.BASE_API_URL}/portfolio`)
+    const portfolioUrl = `${config.BASE_API_URL}/portfolio`;
+    fetch(portfolioUrl, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);
@@ -39,7 +44,10 @@ function CashReportBhavcopy(props) {
         console.log(err.message);
       });
 
-    fetch(`${config.BASE_API_URL}/symbols`)
+    fetch(`${config.BASE_API_URL}/symbols`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);
@@ -89,7 +97,11 @@ function CashReportBhavcopy(props) {
       ""
     );
     fetch(
-      `${config.BASE_API_URL}/cash-reports/bhavcopy?${formData.slice(0, -1)}`
+      `${config.BASE_API_URL}/cash-reports/bhavcopy?${formData.slice(0, -1)}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     )
       .then((res) => res.json())
       .then((res) => {

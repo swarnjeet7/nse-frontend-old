@@ -50,7 +50,13 @@ function FoReportsBhavcopy(props) {
       },
       ""
     );
-    fetch(`${config.BASE_API_URL}/fo-reports/bhavcopy?${formData.slice(0, -1)}`)
+    fetch(
+      `${config.BASE_API_URL}/fo-reports/bhavcopy?${formData.slice(0, -1)}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
       .then((res) => res.json())
       .then((res) => {
         setData(res);

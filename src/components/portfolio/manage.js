@@ -21,7 +21,10 @@ function ManagePortfolio() {
 
   const handleEditPortfolioScript = (portfolio) => {
     const { Portfolio } = portfolio;
-    fetch(`${config.BASE_API_URL}/portfolioScript?Portfolio=${Portfolio}`)
+    fetch(`${config.BASE_API_URL}/portfolioScript?Portfolio=${Portfolio}`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.status === 200) {
@@ -48,7 +51,10 @@ function ManagePortfolio() {
 
   useEffect(() => {
     getAllPortfolio();
-    fetch(`${config.BASE_API_URL}/symbols`)
+    fetch(`${config.BASE_API_URL}/symbols`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);
@@ -56,7 +62,10 @@ function ManagePortfolio() {
   }, []);
 
   const getAllPortfolio = () => {
-    fetch(`${config.BASE_API_URL}/portfolio`)
+    fetch(`${config.BASE_API_URL}/portfolio`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);

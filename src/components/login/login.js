@@ -28,6 +28,7 @@ const LoginForm = () => {
       setLoader(true);
       const url = `${config.BASE_API_URL}/user/login`;
       fetch(url, {
+        credentials: "include",
         method: "POST",
         body: JSON.stringify(form),
         headers: {

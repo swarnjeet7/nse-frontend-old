@@ -49,6 +49,7 @@ function User() {
     }
 
     fetch(`${config.BASE_API_URL}/user/create`, {
+      credentials: "include",
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -85,6 +86,7 @@ function User() {
       return false;
     }
     fetch(`${config.BASE_API_URL}/user/update`, {
+      credentials: "include",
       method: "PATCH",
       body: JSON.stringify(updateForm),
       headers: {
@@ -150,7 +152,10 @@ function User() {
   };
 
   const getAllUsers = () => {
-    fetch(`${config.BASE_API_URL}/user/all`)
+    fetch(`${config.BASE_API_URL}/user/all`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setUsers(res.data);

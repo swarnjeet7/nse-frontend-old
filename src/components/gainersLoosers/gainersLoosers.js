@@ -26,7 +26,11 @@ function GainersLoosers(props) {
     event.preventDefault();
     setLoader(true);
     fetch(
-      `${config.BASE_API_URL}/cash-reports/top?type=${topType}&date=${date}&count=${count}`
+      `${config.BASE_API_URL}/cash-reports/top?type=${topType}&date=${date}&count=${count}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
     )
       .then((res) => res.json())
       .then((res) => {

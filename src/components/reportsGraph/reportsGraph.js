@@ -30,7 +30,10 @@ function ReportsGraph(props) {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    fetch(`${config.BASE_API_URL}/symbols`)
+    fetch(`${config.BASE_API_URL}/symbols`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);
@@ -58,7 +61,10 @@ function ReportsGraph(props) {
       0,
       -1
     )}`;
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         const data = res.data.map((row) => {

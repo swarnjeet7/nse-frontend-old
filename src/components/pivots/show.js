@@ -18,7 +18,10 @@ function ShowPivots() {
   const DEFAULT_PORTFOLIO_VALUE = "Select portfolio";
 
   useEffect(() => {
-    fetch(`${config.BASE_API_URL}/portfolio`)
+    fetch(`${config.BASE_API_URL}/portfolio`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);
@@ -57,7 +60,10 @@ function ShowPivots() {
       ""
     );
     const url = `${config.BASE_API_URL}/pivots?${formData.slice(0, -1)}`;
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setData(res.data);

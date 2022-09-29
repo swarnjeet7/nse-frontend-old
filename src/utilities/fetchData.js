@@ -19,6 +19,9 @@ export const postData = async (url = "", data = {}) => {
 
 export const getData = async (url) => {
   // Default options are marked with *
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+  });
   return response.json(); // parses JSON response into native JavaScript objects
 };

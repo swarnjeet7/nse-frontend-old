@@ -32,6 +32,7 @@ function CreatePortfolio() {
       return false;
     }
     fetch(`${config.BASE_API_URL}/portfolio`, {
+      credentials: "include",
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -63,6 +64,7 @@ function CreatePortfolio() {
       return false;
     }
     fetch(`${config.BASE_API_URL}/portfolio`, {
+      credentials: "include",
       method: "PATCH",
       body: JSON.stringify(updateForm),
       headers: {
@@ -134,7 +136,10 @@ function CreatePortfolio() {
   }, []);
 
   const getAllPortfolio = () => {
-    fetch(`${config.BASE_API_URL}/portfolio`)
+    fetch(`${config.BASE_API_URL}/portfolio`, {
+      method: "GET",
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);

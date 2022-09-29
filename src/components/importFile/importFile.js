@@ -34,6 +34,7 @@ function ImportFile(props) {
     setLoader(true);
     fetch(url, {
       method: "POST",
+      credentials: "include",
       body: formData,
     })
       .then((res) => res.json())

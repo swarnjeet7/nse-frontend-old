@@ -21,6 +21,7 @@ function CreatePivot() {
 
     const url = `${config.BASE_API_URL}/pivots`;
     fetch(url, {
+      credentials: "include",
       method: "POST",
       body: JSON.stringify({ from: date }),
       headers: {
