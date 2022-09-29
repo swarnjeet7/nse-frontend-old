@@ -11,12 +11,12 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 import _ from "lodash";
 import Loader from "../loader";
 import moment from "moment";
 import "./graph.css";
+import config from "../../config";
 
 function ReportsGraph(props) {
   const [form, setForm] = useState({
@@ -30,7 +30,7 @@ function ReportsGraph(props) {
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    fetch("/symbols")
+    fetch(`${config.BASE_API_URL}/symbols`)
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);
@@ -54,7 +54,10 @@ function ReportsGraph(props) {
       },
       ""
     );
-    const url = `/cash-reports/bhavcopy?${formData.slice(0, -1)}`;
+    const url = `${config.BASE_API_URL}/cash-reports/bhavcopy?${formData.slice(
+      0,
+      -1
+    )}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
@@ -64,15 +67,11 @@ function ReportsGraph(props) {
           const year = momentDate.year();
           const month = momentDate.month();
           const day = momentDate.day();
-          // const date = Date.UTC(year, month, day);
-          // return [date, row.High];
           return {
             date: `${day}-${month}-${year}`,
             [form.Symbol]: row.High,
-            // amt: row.High,
           };
         });
-        console.log(data);
         setData(data);
         setLoader(false);
       })

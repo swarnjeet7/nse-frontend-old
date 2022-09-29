@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Container, Form, Row, Col } from "react-bootstrap";
 import Button from "../../molecule/button";
+import config from "../../config";
 
 function CreatePortfolio() {
   const DEFAULT_FORM = {
@@ -30,7 +31,7 @@ function CreatePortfolio() {
       setCreatUserLoader(false);
       return false;
     }
-    fetch("/portfolio", {
+    fetch(`${config.BASE_API_URL}/portfolio`, {
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -61,7 +62,7 @@ function CreatePortfolio() {
       setUpdateUserLoader(false);
       return false;
     }
-    fetch("/portfolio", {
+    fetch(`${config.BASE_API_URL}/portfolio`, {
       method: "PATCH",
       body: JSON.stringify(updateForm),
       headers: {
@@ -133,7 +134,7 @@ function CreatePortfolio() {
   }, []);
 
   const getAllPortfolio = () => {
-    fetch("/portfolio")
+    fetch(`${config.BASE_API_URL}/portfolio`)
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);

@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import _ from "lodash";
 import Button from "../../molecule/button";
+import config from "../../config";
 
 function User() {
   const activeBtn = useRef();
@@ -47,7 +48,7 @@ function User() {
       return false;
     }
 
-    fetch("/user/create", {
+    fetch(`${config.BASE_API_URL}/user/create`, {
       method: "POST",
       body: JSON.stringify(form),
       headers: {
@@ -83,7 +84,7 @@ function User() {
       setUpdateUserLoader(false);
       return false;
     }
-    fetch("/user/update", {
+    fetch(`${config.BASE_API_URL}/user/update`, {
       method: "PATCH",
       body: JSON.stringify(updateForm),
       headers: {
@@ -149,7 +150,7 @@ function User() {
   };
 
   const getAllUsers = () => {
-    fetch("/user/all")
+    fetch(`${config.BASE_API_URL}/user/all`)
       .then((res) => res.json())
       .then((res) => {
         setUsers(res.data);

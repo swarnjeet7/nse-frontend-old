@@ -6,6 +6,7 @@ import Button from "../../molecule/button";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import Loader from "../loader";
 import _ from "lodash";
+import config from "../../config";
 
 function FoReportsBhavcopy(props) {
   const style = {
@@ -49,8 +50,7 @@ function FoReportsBhavcopy(props) {
       },
       ""
     );
-    const url = `/fo-reports/bhavcopy?${formData.slice(0, -1)}`;
-    fetch(url)
+    fetch(`${config.BASE_API_URL}/fo-reports/bhavcopy?${formData.slice(0, -1)}`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);

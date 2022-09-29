@@ -7,6 +7,7 @@ import Loader from "../loader";
 import Button from "../../molecule/button";
 import moment from "moment";
 import _ from "lodash";
+import config from "../../config";
 
 function CashReportBhavcopy(props) {
   const style = {
@@ -29,7 +30,7 @@ function CashReportBhavcopy(props) {
   const DEFAULT_SYMBOL_VALUE = "Select symbol";
 
   useEffect(() => {
-    fetch("/portfolio")
+    fetch(`${config.BASE_API_URL}/portfolio`)
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);
@@ -38,7 +39,7 @@ function CashReportBhavcopy(props) {
         console.log(err.message);
       });
 
-    fetch("/symbols")
+    fetch(`${config.BASE_API_URL}/symbols`)
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);
@@ -87,8 +88,9 @@ function CashReportBhavcopy(props) {
       },
       ""
     );
-    const url = `/cash-reports/bhavcopy?${formData.slice(0, -1)}`;
-    fetch(url)
+    fetch(
+      `${config.BASE_API_URL}/cash-reports/bhavcopy?${formData.slice(0, -1)}`
+    )
       .then((res) => res.json())
       .then((res) => {
         setData(res.data);

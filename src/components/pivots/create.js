@@ -4,6 +4,7 @@ import Loader from "../loader";
 import Button from "../../molecule/button";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
+import config from "../../config";
 
 function CreatePivot() {
   const [date, setDate] = useState("05/23/2022");
@@ -18,7 +19,7 @@ function CreatePivot() {
     event.preventDefault();
     setLoader(true);
 
-    const url = `/pivots`;
+    const url = `${config.BASE_API_URL}/pivots`;
     fetch(url, {
       method: "POST",
       body: JSON.stringify({ from: date }),

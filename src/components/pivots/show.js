@@ -5,6 +5,7 @@ import Loader from "../loader";
 import Button from "../../molecule/button";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
+import config from "../../config";
 
 function ShowPivots() {
   const [form, setForm] = useState({
@@ -17,7 +18,7 @@ function ShowPivots() {
   const DEFAULT_PORTFOLIO_VALUE = "Select portfolio";
 
   useEffect(() => {
-    fetch("/portfolio")
+    fetch(`${config.BASE_API_URL}/portfolio`)
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);
@@ -55,7 +56,7 @@ function ShowPivots() {
       },
       ""
     );
-    const url = `/pivots?${formData.slice(0, -1)}`;
+    const url = `${config.BASE_API_URL}/pivots?${formData.slice(0, -1)}`;
     fetch(url)
       .then((res) => res.json())
       .then((res) => {

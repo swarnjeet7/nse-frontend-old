@@ -3,6 +3,7 @@ import "bootstrap-daterangepicker/daterangepicker.css";
 import { Form, Row, Col, Table } from "react-bootstrap";
 import { useState } from "react";
 import Button from "../../molecule/button";
+import config from "../../config";
 
 function GainersLoosers(props) {
   const style = {
@@ -24,7 +25,9 @@ function GainersLoosers(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoader(true);
-    fetch(`/cash-reports/top?type=${topType}&date=${date}&count=${count}`)
+    fetch(
+      `${config.BASE_API_URL}/cash-reports/top?type=${topType}&date=${date}&count=${count}`
+    )
       .then((res) => res.json())
       .then((res) => {
         setData(res);

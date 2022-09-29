@@ -8,6 +8,7 @@ import {
   ToastContainer,
 } from "react-bootstrap";
 import Button from "../../molecule/button";
+import config from "../../config";
 
 function ImportFile(props) {
   const inputRef = useRef(null);
@@ -27,7 +28,9 @@ function ImportFile(props) {
     const formData = new FormData();
     formData.append("file", file);
     setError(true);
-    const url = `/${title === "FO" ? "fo-reports" : "cash-reports"}/bhavcopy`;
+    const url = `${config.BASE_API_URL}/${
+      title === "FO" ? "fo-reports" : "cash-reports"
+    }/bhavcopy`;
     setLoader(true);
     fetch(url, {
       method: "POST",

@@ -6,6 +6,7 @@ import { setData } from "../reportsBhavcopy/reportsBhavcopySlice";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "bootstrap-daterangepicker/daterangepicker.css";
+import config from "../../config";
 
 function ReportsBhavcopyModal(props) {
   const { isCashBhavcopy, show, onHide } = props;
@@ -13,7 +14,9 @@ function ReportsBhavcopyModal(props) {
   const [date, setDate] = useState(moment());
   const activeKey = isCashBhavcopy ? "date" : "date_range";
   const [key, setKey] = useState(activeKey);
-  const url = `/${isCashBhavcopy ? "cash-reports" : "fo-reports"}/bhavcopy`;
+  const url = `${config.BASE_API_URL}/${
+    isCashBhavcopy ? "cash-reports" : "fo-reports"
+  }/bhavcopy`;
   const navigate = useNavigate();
 
   const handleDateChange = (newDate) => {

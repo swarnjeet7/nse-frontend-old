@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import { useEffect, useState, useRef } from "react";
 import SearchComponent from "../searchComponent/searchComponent";
+import config from "../../config";
 
 function ManagePortfolio() {
   const activeBtn = useRef(null);
@@ -20,7 +21,7 @@ function ManagePortfolio() {
 
   const handleEditPortfolioScript = (portfolio) => {
     const { Portfolio } = portfolio;
-    fetch(`/portfolioScript?Portfolio=${Portfolio}`)
+    fetch(`${config.BASE_API_URL}/portfolioScript?Portfolio=${Portfolio}`)
       .then((res) => res.json())
       .then((res) => {
         if (res.status === 200) {
@@ -47,7 +48,7 @@ function ManagePortfolio() {
 
   useEffect(() => {
     getAllPortfolio();
-    fetch("/symbols")
+    fetch(`${config.BASE_API_URL}/symbols`)
       .then((res) => res.json())
       .then((res) => {
         setSymbols(res.data);
@@ -55,7 +56,7 @@ function ManagePortfolio() {
   }, []);
 
   const getAllPortfolio = () => {
-    fetch("/portfolio")
+    fetch(`${config.BASE_API_URL}/portfolio`)
       .then((res) => res.json())
       .then((res) => {
         setPortfolios(res.data);
